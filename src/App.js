@@ -1,5 +1,6 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { setData } from "./util/firebase";
 
 function App() {
   const [orientation, setOrientation] = useState({ x: 0, y: 0, z: 0 });
@@ -7,8 +8,19 @@ function App() {
   const [accelerationGx, setAcclerationGx] = useState({ x: 0, y: 0, z: 0 });
   const [gyroscope, setGyroscope] = useState({ x: 0, y: 0, z: 0 });
 
+  const setDataIfNotNull = (path, value) => {
+    if (value !== null) {
+      setData(path, value);
+    }
+  };
+
   function handleOrientation(event) {
-    setOrientation({ x: event.alpha, y: event.beta, z: event.gamma });
+    setOrientation({
+      x: event.alpha ?? orientation.x,
+      y: event.beta ?? orientation.y,
+      z: event.gamma ?? orientation.z,
+    });
+    setData("/orientation", orientation);
   }
 
   function handleMotion(event) {
@@ -27,6 +39,9 @@ function App() {
       y: event.rotationRate.beta ?? gyroscope.y,
       z: event.rotationRate.gamma ?? gyroscope.z,
     });
+    setData("/acceleration", acceleration);
+    setData("/accelerationGx", accelerationGx);
+    setData("/gyroscope", gyroscope);
   }
 
   const handlePermissions = () => {
@@ -48,28 +63,6 @@ function App() {
       <header className="App-header">
         <p>
           <button onClick={handlePermissions}>Start</button>
-        </p>
-        <h3>Sensor Values</h3>
-        <p>
-          <strong>Orientation</strong>
-        </p>
-        <p>
-          x: {orientation.x.toFixed(2)} y: {orientation.y.toFixed(2)} z:{" "}
-          {orientation.z.toFixed(2)}
-        </p>
-        <p>
-          <strong>Acceleration</strong>
-        </p>
-        <p>
-          x: {acceleration.x.toFixed(2)} y: {acceleration.y.toFixed(2)} z:{" "}
-          {acceleration.z.toFixed(2)}
-        </p>
-        <p>
-          <strong>Acceleration Including Gravity</strong>
-        </p>
-        <p>
-          x: {accelerationGx.x.toFixed(2)} y: {accelerationGx.y.toFixed(2)} z:{" "}
-          {accelerationGx.z.toFixed(2)}
         </p>
       </header>
     </div>
