@@ -9,35 +9,17 @@ class ContextProvider extends Component{
     super(props);
 
     this.state = {
-        orientation: {
-                x: 0, y: 0, z: 0
-        },
-        acceleration: {
-                x: 0, y: 0, z: 0
-        },
-        accelerationGx: {
-                x: 0, y: 0, z: 0
-        },
-        gyroscope: {
-                x: 0, y: 0, z: 0
-        },
+        orientation:    { x: 0, y: 0, z: 0 },
+        acceleration:   { x: 0, y: 0, z: 0 },
+        accelerationGx: { x: 0, y: 0, z: 0 },
+        gyroscope:      { x: 0, y: 0, z: 0 },
         isFlapping: false,
 
-        setOrientation: (x) => {
-                this.setState({ orientation: x });
-        },
-        setAcceleration: (x) => {
-                this.setState({ acceleration: x });
-        },
-        setAccelerationGx: (x) => {
-                this.setState({ accelerationGx: x });
-        },
-        setGyroscope: (x) => {
-                this.setState({ gyroscope: x });
-        },
-        setIsFlapping: (x) => {
-                this.setState({ isFlapping: x });
-        }
+        setOrientation:    (x) => { this.setState({ orientation:    x }) },
+        setAcceleration:   (x) => { this.setState({ acceleration:   x }) },
+        setAccelerationGx: (x) => { this.setState({ accelerationGx: x }) },
+        setGyroscope:      (x) => { this.setState({ gyroscope:      x }) },
+        setIsFlapping:     (x) => { this.setState({ isFlapping:     x }) },
     };
   }
 

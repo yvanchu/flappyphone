@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { setData, useData } from "./util/firebase";
 import styled from "styled-components";
 
 import { Context } from "./components/Context";
@@ -21,27 +22,37 @@ function App() {
     trans: 0,
   });
 
-  useEffect(() => {
-    if (context.gyroscope.x > ALPHA_LOWER_BOUND && context.acceleration.z > AZ_LOWER_BOUND) {
-      if (!context.isFlapping) {
-        context.setIsFlapping(true);
-        setFlaps(flaps + 1);
-      }
-    } else {
-      context.setIsFlapping(false);
-    }
+  let [cooldown, setCooldown] = useState(0);
+  
+  const [cloud_count, loading, error] = useData("/count");
 
-    if (context.gyroscope.x > maxes.rot) {
-      setMaxes({
-        ...maxes,
-        rot: context.gyroscope.x,
-      });
-    }
-    if (context.acceleration.z > maxes.trans) {
-      setMaxes({
-        ...maxes,
-        trans: context.acceleration.z,
-      });
+  useEffect(() => {
+    if (cooldown < 1) {
+      if (context.gyroscope.x > ALPHA_LOWER_BOUND && context.acceleration.z > AZ_LOWER_BOUND) {
+        if (!context.isFlapping) {
+          context.setIsFlapping(true);
+          setData("/count", flaps + 1);
+          setFlaps(flaps + 1);
+        }
+      } else {
+        context.setIsFlapping(false);
+      }
+  
+      if (context.gyroscope.x > maxes.rot) {
+        setMaxes({
+          ...maxes,
+          rot: context.gyroscope.x,
+        });
+      }
+      if (context.acceleration.z > maxes.trans) {
+        setMaxes({
+          ...maxes,
+          trans: context.acceleration.z,
+        });
+      }
+      setCooldown(2);
+    } else {
+      setCooldown(cooldown - 1);
     }
   }, [context]);
 
@@ -87,14 +98,19 @@ function App() {
         <p>
           <button onClick={handlePermissions}>Start</button>
         </p>
-        <h3>Sensor Values</h3>
-        <Sensor fieldName={"gyroscope"} threshold={200} />
-        <Sensor fieldName={"acceleration"} threshold={7} />
-        <p>
-          {flaps}
-        </p>
-        <p>{maxes.rot}</p>
-        <p>{maxes.trans}</p>
+        {loading
+        ? <>Loading...</>
+        : <>
+            <h3>Sensor Values</h3>
+            <Sensor fieldName={"gyroscope"} threshold={200} />
+            <Sensor fieldName={"acceleration"} threshold={7} />
+            <p>
+              {flaps} | {cloud_count}
+            </p>
+            <p>{maxes.rot}</p>
+            <p>{maxes.trans}</p>
+          </>
+        }
       </header>
     </div>
   );

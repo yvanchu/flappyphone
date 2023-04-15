@@ -11,7 +11,7 @@ function Sensor(props) {
 
         useEffect(() => {
                 setField(props.fieldName);
-        }, []);
+        }, [props.fieldName]);
 
         return (
                 <div>
