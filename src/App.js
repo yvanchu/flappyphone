@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { setData, useData } from "./util/firebase";
 import styled from "styled-components";
+import { Game } from "./Game";
 
 import { Context } from "./components/Context";
 
@@ -57,9 +58,9 @@ function App() {
   }, [context]);
 
   useEffect(() => {
-    const timer = count > 0 && setInterval(() => setCount(count - 1), 1000);
+    const timer = flaps > 0 && setInterval(() => setFlaps(flaps - 1), 1000);
     return () => clearInterval(timer);
-  }, [count]);
+  }, [flaps]);
 
   function handleOrientation(event) {
     context.setOrientation({ x: event.alpha, y: event.beta, z: event.gamma });
@@ -117,6 +118,7 @@ function App() {
           </>
         }
       </header>
+      <Game />
     </div>
   );
 }

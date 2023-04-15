@@ -7,14 +7,14 @@ import Leaderboard from "./flappyScreen/Leaderboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 ReactDOM.render(
   <BrowserRouter>
+  <ContextProvider>
     <Routes>
       <Route path="/">
-        <ContextProvider>
           <Route path="flappy" element={<App />} />
-        </ContextProvider>
         <Route path="leaderboard" element={<Leaderboard />} />
       </Route>
     </Routes>
+    </ContextProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );
