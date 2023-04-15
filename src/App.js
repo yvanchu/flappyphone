@@ -1,6 +1,5 @@
 import "./App.css";
 import { useState } from "react";
-import SensorValue from "./SensorValues";
 import { setData } from "./util/firebase";
 
 function App() {
