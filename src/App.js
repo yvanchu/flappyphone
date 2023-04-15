@@ -15,6 +15,11 @@ function App() {
     setData("/count", count);
   }, [count]);
 
+  useEffect(() => {
+    const timer = count > 0 && setInterval(() => setCount(count - 1), 1000);
+    return () => clearInterval(timer);
+  }, [count]);
+
   function handleOrientation(event) {
     setOrientation({
       x: event.alpha ?? orientation.x,
