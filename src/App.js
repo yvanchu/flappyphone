@@ -56,6 +56,11 @@ function App() {
     }
   }, [context]);
 
+  useEffect(() => {
+    const timer = count > 0 && setInterval(() => setCount(count - 1), 1000);
+    return () => clearInterval(timer);
+  }, [count]);
+
   function handleOrientation(event) {
     context.setOrientation({ x: event.alpha, y: event.beta, z: event.gamma });
   }
