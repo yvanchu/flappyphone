@@ -1,18 +1,19 @@
 import "./App.css";
-import { useState } from "react";
-import { setData } from "./util/firebase";
+import { useEffect, useState } from "react";
+import { setData, useData } from "./util/firebase";
 
 function App() {
   const [orientation, setOrientation] = useState({ x: 0, y: 0, z: 0 });
   const [acceleration, setAccleration] = useState({ x: 0, y: 0, z: 0 });
   const [accelerationGx, setAcclerationGx] = useState({ x: 0, y: 0, z: 0 });
   const [gyroscope, setGyroscope] = useState({ x: 0, y: 0, z: 0 });
+  const [count, setCount] = useState(0);
 
-  const setDataIfNotNull = (path, value) => {
-    if (value !== null) {
-      setData(path, value);
-    }
-  };
+  const [cloud_count, loading, error] = useData("/count");
+
+  useEffect(() => {
+    setData("/count", count);
+  }, [count]);
 
   function handleOrientation(event) {
     setOrientation({
@@ -20,7 +21,6 @@ function App() {
       y: event.beta ?? orientation.y,
       z: event.gamma ?? orientation.z,
     });
-    setData("/orientation", orientation);
   }
 
   function handleMotion(event) {
@@ -39,9 +39,6 @@ function App() {
       y: event.rotationRate.beta ?? gyroscope.y,
       z: event.rotationRate.gamma ?? gyroscope.z,
     });
-    setData("/acceleration", acceleration);
-    setData("/accelerationGx", accelerationGx);
-    setData("/gyroscope", gyroscope);
   }
 
   const handlePermissions = () => {
@@ -55,6 +52,8 @@ function App() {
 
     window.addEventListener("devicemotion", handleMotion);
     window.addEventListener("deviceorientation", handleOrientation);
+
+    setCount(count + 1);
   };
 
   // display the values of the sensors on the screen rounded to 2 decimal places
@@ -63,6 +62,8 @@ function App() {
       <header className="App-header">
         <p>
           <button onClick={handlePermissions}>Start</button>
+          <p>local count: {count}</p>
+          <p>server count: {cloud_count}</p>
         </p>
       </header>
     </div>
