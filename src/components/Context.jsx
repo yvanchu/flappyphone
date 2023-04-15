@@ -21,6 +21,7 @@ class ContextProvider extends Component{
         gyroscope: {
                 x: 0, y: 0, z: 0
         },
+        isFlapping: false,
 
         setOrientation: (x) => {
                 this.setState({ orientation: x });
@@ -34,6 +35,9 @@ class ContextProvider extends Component{
         setGyroscope: (x) => {
                 this.setState({ gyroscope: x });
         },
+        setIsFlapping: (x) => {
+                this.setState({ isFlapping: x });
+        }
     };
   }
 

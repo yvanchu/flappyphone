@@ -1,12 +1,27 @@
-import "./App.css";
 import { useState, useEffect, useContext } from "react";
+import styled from "styled-components";
 
 import { Context } from "./components/Context";
 
 import Sensor from "./components/Sensor";
 
+import "./App.css";
+
 function App() {
   let context = useContext(Context);
+
+  let [flaps, setFlaps] = useState(0);
+
+  useEffect(() => {
+    if (context.gyroscope.x > 200 && context.acceleration.z > 8) {
+      if (!context.isFlapping) {
+        context.setIsFlapping(true);
+        setFlaps(flaps + 1);
+      }
+    } else {
+      context.setIsFlapping(false);
+    }
+  }, [context]);
 
   function handleOrientation(event) {
     context.setOrientation({ x: event.alpha, y: event.beta, z: event.gamma });
@@ -51,9 +66,11 @@ function App() {
           <button onClick={handlePermissions}>Start</button>
         </p>
         <h3>Sensor Values</h3>
-        <Sensor fieldName={"orientation"} />
-        <Sensor fieldName={"acceleration"} />
-        <Sensor fieldName={"accelerationGx"} />
+        <Sensor fieldName={"gyroscope"} threshold={200} />
+        <Sensor fieldName={"acceleration"} threshold={7} />
+        <p>
+          {flaps}
+        </p>
       </header>
     </div>
   );
