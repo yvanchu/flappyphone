@@ -7,19 +7,41 @@ import Sensor from "./components/Sensor";
 
 import "./App.css";
 
+const ALPHA_LOWER_BOUND = 300;
+const ALPHA_UPPER_BOUND = 1010;
+const AZ_LOWER_BOUND = 12;
+const AZ_UPPER_BOUND = 69;
+
 function App() {
   let context = useContext(Context);
 
   let [flaps, setFlaps] = useState(0);
+  let [maxes, setMaxes] = useState({
+    rot: 0,
+    trans: 0,
+  });
 
   useEffect(() => {
-    if (context.gyroscope.x > 200 && context.acceleration.z > 8) {
+    if (context.gyroscope.x > ALPHA_LOWER_BOUND && context.acceleration.z > AZ_LOWER_BOUND) {
       if (!context.isFlapping) {
         context.setIsFlapping(true);
         setFlaps(flaps + 1);
       }
     } else {
       context.setIsFlapping(false);
+    }
+
+    if (context.gyroscope.x > maxes.rot) {
+      setMaxes({
+        ...maxes,
+        rot: context.gyroscope.x,
+      });
+    }
+    if (context.acceleration.z > maxes.trans) {
+      setMaxes({
+        ...maxes,
+        trans: context.acceleration.z,
+      });
     }
   }, [context]);
 
@@ -71,6 +93,8 @@ function App() {
         <p>
           {flaps}
         </p>
+        <p>{maxes.rot}</p>
+        <p>{maxes.trans}</p>
       </header>
     </div>
   );
