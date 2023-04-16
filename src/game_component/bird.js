@@ -7,19 +7,6 @@ function Bird(props) {
     <GameObject
       updateFunction={(currentState) => {
         if (props.gameState.isPlaying && !props.gameState.isGameOver) {
-          /*
-          if (gameState.isPlaying && !gameState.isGameOver) {
-//         let bird = context.bird;
-//         bird.y -= bird.currSpeed;
-//         bird.currSpeed -= bird.gravity;
-//         context.setBird(bird);
-//         if (checkCollide(context.bird, pipes)) {
-//           gameState.isGameOver = true;
-//           context.setGameState(gameState);
-//           console.log("game over!");
-//         }
-//       }
-          */
 
           let nextState = {...currentState};
           nextState.y -= currentState.currSpeed;
@@ -28,7 +15,6 @@ function Bird(props) {
           if (currentState.flaps < props.count) {
             nextState.flaps = props.count;
             nextState.currSpeed = currentState.initFallSpeed;
-//     bird.currSpeed = bird.initFallSpeed;
           }
           
           return nextState;
