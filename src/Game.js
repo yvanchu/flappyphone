@@ -18,7 +18,6 @@ export const Game = () => {
     pipeData: new Array(NUM_PIPES).fill({ x: 0, y: 0, width: 50, height: 200 }),
   });
   const [localCount, setLocalCount] = useState(0);
-  const [score, setScore] = useState(0);
 
   const navigate = useNavigate();
   const { pid } = useParams();
@@ -49,12 +48,7 @@ export const Game = () => {
         ...gameState,
         isPlaying: true,
       }));
-      setScore(0);
-    } else {
-        if (!gameState.isGameOver) {
-            setScore((score) => score + 1);
-        }
-    }
+    } 
   };
 
   useEffect(() => {
@@ -123,7 +117,7 @@ export const Game = () => {
             />
             <Ground />
             <Text
-            text={score}
+            text={playerData.flapCount}
             anchor={0.5}
             x={window.innerWidth / 2}
             y={150}
