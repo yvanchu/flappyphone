@@ -5,15 +5,13 @@ import Bird from "./game_component/bird";
 import Pipes from "./game_component/pipes";
 import { useData, setData } from "./util/firebase";
 
+const NUM_PIPES = 3;
+
 export const Game = () => {
   const [gameState, setGameState] = useState({
     isPlaying: false,
     isGameOver: false,
-    pipeData: [
-      { x: 0, y: 0 },
-      { x: 0, y: 0 },
-      { x: 0, y: 0 },
-    ],
+    pipeData: new Array(NUM_PIPES).fill({ x: 0, y: 0, width: 50, height: 200 }),
   });
   const [localCount, setLocalCount] = useState(0);
 
@@ -29,7 +27,11 @@ export const Game = () => {
 
   const setPipeData = (i, x, y) => {
     let currentPipeData = gameState.pipeData;
-    currentPipeData[i] = { x: x, y: y };
+    currentPipeData[i] = {
+      ...currentPipeData[i],
+      x: x,
+      y: y,
+    };
     setGameState((gameState) => ({
       ...gameState,
       pipeData: currentPipeData,
@@ -49,7 +51,9 @@ export const Game = () => {
     setData(`/players/${pid}/flapCount`, 0);
 
     window.addEventListener("keydown", (event) => {
-      handleFlap();
+      if (event.key === " ") {
+        handleFlap();
+      }
     });
   }, []);
 
@@ -60,14 +64,28 @@ export const Game = () => {
     }
   }, [playerData, localCount]);
 
+  useEffect(() => {
+    console.log(gameState);
+  }, [gameState.gameOver]);
+
   return (
     <>
       {loading ? (
         <p>loading</p>
       ) : (
         <Stage>
-          <Bird count={playerData.flapCount} gameState={gameState} />
+          <Bird
+            setGameOver={(x) => {
+              setGameState((gameState) => ({
+                ...gameState,
+                isGameOver: true,
+              }));
+            }}
+            count={playerData.flapCount}
+            gameState={gameState}
+          />
           <Pipes
+            numPipes={NUM_PIPES}
             gameState={gameState}
             setPipeData={(a, b, c) => setPipeData(a, b, c)}
           />
