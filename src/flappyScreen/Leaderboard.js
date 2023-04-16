@@ -8,6 +8,8 @@ import RedBird from '../assets/red_bird.png';
 import BlueBird from '../assets/blue_bird.png';
 import YellowBird from '../assets/yellow_bird.png';
 import Title from '../assets/LEADERBOARD.png';
+import Logo from '../assets/logo-wrap.png';
+import Logo2 from '../assets/logo.png';
 
 import { useParams } from "react-router";
 
@@ -90,8 +92,10 @@ function Leaderboard() {
         <p>{Number(cloud_count)}</p>
       </header> */}
       <Column>
-        <Img src={RedBird} height={screen.bird} y={5} />
-        <ImgR src={YellowBird} height={screen.bird} y={30} />
+        <a href="/"><Img src={Logo2} width={screen.width / 3} y={5} />
+          </a>
+        <Img src={RedBird} height={screen.bird} y={14} />
+        <ImgR src={YellowBird} height={screen.bird} y={35} />
         <Img src={BlueBird} height={screen.bird} y={58} />
       </Column>
       <Column a>

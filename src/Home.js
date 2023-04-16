@@ -19,13 +19,12 @@ const qrCode = new QRCodeStyling({
     crossOrigin: "anonymous",
     margin: 20,
   },
-  data: "https://0204-165-124-85-12.ngrok-free.app/flappy/phone",
+  data: `https://0204-165-124-85-12.ngrok-free.app/flappy/phone/`,
 });
 
 const Home = () => {
-  const [url, setURL] = useState("");
   const [inQueue, setInQueue] = useState(false);
-  const [playerID, setPlayerID] = useState(0);
+  const [playerID, setPlayerID] = useState(localStorage.getItem("playerID"));
   const navigate = useNavigate();
   const ref = useRef(null);
 
@@ -66,7 +65,6 @@ const Home = () => {
         {inQueue ? (
           <>
             <h1>Scan to join</h1>
-            <div ref={ref} />
             <p>DEBUG: {playerID}</p>
           </>
         ) : (
@@ -78,6 +76,7 @@ const Home = () => {
             </p>
           </>
         )}
+        <div ref={ref} />
       </header>
     </div>
   );
