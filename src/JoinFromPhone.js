@@ -66,14 +66,14 @@ const JoinFromPhone = (props) => {
           <Arrow src={Arr} onClick={() => {click(1)}} />
         </Carousel>
       </Flex>
-      <Flex flex={1}>
+      {/* <Flex flex={1}>
         <em>Optional photo</em>
         <ModalButton onClick={() => {setModal(true)}}>
           <Img src={CameraIcon} width="18px" />
           Add a custom avatar photo
         </ModalButton>
-        {/* <input type="file" /> */}
-      </Flex>
+        <input type="file" />
+      </Flex> */}
       <Flex flex={1}>
         <Submit onClick={startGame} valid={name != ""}>
           Ready to Fly
