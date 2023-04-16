@@ -50,7 +50,16 @@ function App() {
         context.acceleration.z > AZ_LOWER_BOUND
       ) {
         if (!context.isFlapping && !context.isGameOver) {
+          console.log("WEFJIODSJFIOJDIOSFJ")
           context.setIsFlapping(true);
+          
+          if (playerData.hasOwnProperty('hs')) {
+            if (playerData.hs == playerData.flapCount) {
+              setData(`/players/${pid}/hs`, playerData.flapCount + 1);
+            }
+          } else {
+            setData(`/players/${pid}/hs`, playerData.flapCount + 1);
+          }
           setData(`/players/${pid}/flapCount`, playerData.flapCount + 1);
           setFlaps(flaps + 1);
         }
@@ -114,11 +123,11 @@ function App() {
   // display the values of the sensors on the screen rounded to 2 decimal places
   return (
     <Wrapper>
-        {loading ? (
-          "Loading..."
-        ) : playerData.playerState === "waiting-for-screen" ? (
-          <>
-            <h3>Sensor Values</h3>
+      {loading ? (
+        "Loading..."
+      ) : playerData.playerState === "waiting-for-screen" ? (
+        <>
+          {/* <h3>Sensor Values</h3>
             <Sensor fieldName={"gyroscope"} threshold={200} />
             <Sensor fieldName={"acceleration"} threshold={7} />
             <p>
@@ -126,15 +135,20 @@ function App() {
               {playerData && playerData.flapCount ? playerData.flapCount : 0}
             </p>
             <p>{maxes.rot}</p>
-            <p>{maxes.trans}</p>
-            <button onClick={handlePermissions}>DEBUG: seek permission</button>
-          </>
-        ) : (
-          <JoinFromPhone handlePermission={handlePermissions} pid={pid} bird={birdData} updateBird={(x) => {
+            <p>{maxes.trans}</p> */}
+          <h3>You're ready to flap!</h3>
+          <button onClick={handlePermissions}>Reset Sensors</button>
+        </>
+      ) : (
+        <JoinFromPhone
+          handlePermission={handlePermissions}
+          pid={pid}
+          bird={birdData}
+          updateBird={(x) => {
             setBirdData(x);
-          }} />
-        )
-        }
+          }}
+        />
+      )}
       {/* <Game /> */}
     </Wrapper>
   );
