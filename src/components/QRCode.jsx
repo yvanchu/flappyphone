@@ -1,6 +1,7 @@
 import QRCodeStyling from "qr-code-styling";
 import bird from "../assets/bird.png";
 import { useEffect, useRef } from "react";
+import Constants from "../config.json";
 
 const qrCode = new QRCodeStyling({
   width: 300,
@@ -14,7 +15,7 @@ const qrCode = new QRCodeStyling({
     crossOrigin: "anonymous",
     margin: 20,
   },
-  data: `https://0204-165-124-85-12.ngrok-free.app/flappy/phone/`,
+  data: `${Constants["rootURL"]}/flappy/phone/`,
 });
 
 const QRCode = ({ pid }) => {
@@ -25,7 +26,7 @@ const QRCode = ({ pid }) => {
 
   useEffect(() => {
     qrCode.update({
-      data: `https://0204-165-124-85-12.ngrok-free.app/flappy/phone/${pid}`,
+      data: `${Constants["rootURL"]}/flappy/phone/${pid}`,
     });
   }, [pid]);
 

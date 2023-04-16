@@ -1,29 +1,22 @@
-
-import { Stage, Container, Sprite } from '@pixi/react';
+import { Stage, Container, Sprite } from "@pixi/react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import Bird from "./game_component/bird";
 import Pipes from "./game_component/pipes";
-import Ground from './game_component/ground';
+import Ground from "./game_component/ground";
 import { useData, setData } from "./util/firebase";
 import bg from "./assets/bg.png";
-import LFSR from './util/lfsr';
-import { SETTING, NUM_PIPES } from './game_component/setting';
-
-let current = 0xabcb;
-
-current = LFSR(current);
+import { SETTING, NUM_PIPES } from "./game_component/setting";
 
 export const Game = () => {
-
-    const [gameState, setGameState] = useState({
-        isPlaying: false,
-        isGameOver: false,
-        seed: SETTING.initSeed,
-        shouldGetNewSeed: true,
-        pipeData: new Array(NUM_PIPES).fill({x: 0, y: 0, width: 50, height: 200}),
-    })
-    const [localCount, setLocalCount] = useState(0);
+  const [gameState, setGameState] = useState({
+    isPlaying: false,
+    isGameOver: false,
+    seed: SETTING.initSeed,
+    shouldGetNewSeed: true,
+    pipeData: new Array(NUM_PIPES).fill({ x: 0, y: 0, width: 50, height: 200 }),
+  });
+  const [localCount, setLocalCount] = useState(0);
 
   const navigate = useNavigate();
   const { pid } = useParams();
@@ -79,45 +72,50 @@ export const Game = () => {
   }, [gameState.gameOver]);
 
   return (
-<>
-{loading ? (
-  <p>loading</p>
-) : (
-    <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
-    >
-    <Container>
-    <Sprite image={bg} x={0} y={0} width={window.innerWidth} height={window.innerHeight}/>
-    <Bird
-            setGameOver={(x) => {
-                setGameState(gameState => ({
-                ...gameState,
-                isGameOver: true,
-              }));
-            }}
-            count={playerData.flapCount}
-            gameState={gameState}
-        />
-        <Pipes
-            setNewSeed={(x) => {
-                setGameState(gameState => ({
-                ...gameState,
-                seed: x
-            }));}}
-            setShouldGetNewSeed={(x) => {
-                setGameState(gameState => ({
-                ...gameState,
-                shouldGetNewSeed: x
-            }));}}
-            numPipes={NUM_PIPES}
-            gameState={gameState}
-            setPipeData={(a, b, c) => setPipeData(a, b, c)}
-        />
-    <Ground />
-    </Container>
-    </Stage>
-    )}
+    <>
+      {loading ? (
+        <p>loading</p>
+      ) : (
+        <Stage width={window.innerWidth} height={window.innerHeight}>
+          <Container>
+            <Sprite
+              image={bg}
+              x={0}
+              y={0}
+              width={window.innerWidth}
+              height={window.innerHeight}
+            />
+            <Bird
+              setGameOver={(x) => {
+                setGameState((gameState) => ({
+                  ...gameState,
+                  isGameOver: true,
+                }));
+              }}
+              count={playerData.flapCount}
+              gameState={gameState}
+            />
+            <Pipes
+              setNewSeed={(x) => {
+                setGameState((gameState) => ({
+                  ...gameState,
+                  seed: x,
+                }));
+              }}
+              setShouldGetNewSeed={(x) => {
+                setGameState((gameState) => ({
+                  ...gameState,
+                  shouldGetNewSeed: x,
+                }));
+              }}
+              numPipes={NUM_PIPES}
+              gameState={gameState}
+              setPipeData={(a, b, c) => setPipeData(a, b, c)}
+            />
+            <Ground />
+          </Container>
+        </Stage>
+      )}
     </>
   );
 };
