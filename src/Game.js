@@ -62,13 +62,19 @@ export const Game = () => {
         }
     }, [cloud_count]);
 
+    useEffect(() => {
+        console.log(gameState)
+    }, [gameState.gameOver])
+
   return (
     <Stage>
         <Bird
-            setGameOver={(x) => {setGameState(gameState => ({
+            setGameOver={(x) => {
+                console.log(`SDJFIOSDJFKLSDJF: ${x}`)
+                setGameState(gameState => ({
                 ...gameState,
-                isGameOver: x
-            }))}}
+                isGameOver: true
+            }));}}
             count={localCount.value}
             gameState={gameState}
         />
