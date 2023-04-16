@@ -1,21 +1,37 @@
+import GameObject from "./GameObject";
 
-import { Stage, Container, Sprite, Text } from '@pixi/react';
-import { useMemo, useContext } from 'react';
-import { Context } from "../components/Context";
-import pipe from "../assets/pipe.png"
+import pipeImg from "../assets/pipe.png";
 
-export const Pipe = () =>
-{
-  let context = useContext(Context);
+function Pipe(props) {
+        return (
+                <GameObject
+                        updateFunction={(currentState) => {
+                                let nextX = currentState.x - 1;
+                                if (nextX < -100) {
+                                nextX = 600;
+                                }
 
-  return (
-    <Sprite
-        image={pipe}
-        x={200}
-        y={600}
-        height={200}
-        width={50}
-        anchor={{ x: 1, y: 1 }}
-      />
-  );
-};
+                                let nextState = {
+                                ...currentState,
+                                x: nextX,
+                                };
+                                
+                                return nextState;
+                        }}
+
+                        initObjData={{
+                                image: pipeImg,
+                                x: 200 * props.index,
+                                y: 600,
+                                width: 50,
+                                height: 200,
+                                anchor: {
+                                x: 1,
+                                y: 1,
+                                },
+                        }}
+                />
+        )
+}
+
+export default Pipe;
