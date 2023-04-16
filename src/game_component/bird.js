@@ -23,20 +23,20 @@ function Bird(props) {
 
             //check top pipe
             if (
-              currentState.x + currentState.width > pipe.x &&
-              currentState.x < pipe.x + SETTING.pipe.width &&
-              currentState.y + currentState.height > topPipeY &&
-              currentState.y < topPipeY + SETTING.pipe.height
+              currentState.x + 60 > pipe.x &&
+              currentState.x + 10 < pipe.x + SETTING.pipe.width &&
+              currentState.y + 60 > topPipeY &&
+              currentState.y + 10 < topPipeY + SETTING.pipe.height
             ) {
               console.log("hit top pipe");
               props.setGameOver(true);
             }
             //check bottom pipe
             else if (
-              currentState.x + currentState.width > pipe.x &&
-              currentState.x < pipe.x + SETTING.pipe.width &&
-              currentState.y + currentState.height > pipe.y &&
-              currentState.y < pipe.y + SETTING.pipe.height
+              currentState.x + 60 > pipe.x &&
+              currentState.x + 10 < pipe.x + SETTING.pipe.width &&
+              currentState.y + 60 > pipe.y &&
+              currentState.y + 10 < pipe.y + SETTING.pipe.height
             ) {
               console.log("height: ", pipe.height);
               console.log("gap: ", SETTING.pipe.gap);
@@ -70,8 +70,8 @@ function Bird(props) {
         image: BIRDLIST[props.character],
         x: 100,
         y: 350,
-        width: 50,
-        height: 50,
+        width: 70,
+        height: 70,
         anchor: {
           x: 0,
           y: 0,
