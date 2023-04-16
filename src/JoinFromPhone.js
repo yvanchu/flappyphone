@@ -36,6 +36,7 @@ const JoinFromPhone = (props) => {
       {modal && <Modal onClick={() => setModal(false)}>
         <InnerModal onClick={e => e.stopPropagation()}>
           /* NEEDS PHOTO UPLOAD LOGIC */
+          <input type="file" accept="image/*" capture="camera" />
         </InnerModal>
       </Modal>}
       <Flex flex={0.7}>
@@ -167,10 +168,11 @@ const Modal = styled.div`
 `;
 
 const InnerModal = styled.div`
-  width: calc(100% - 60px);
-  height: 60%;
+  width: calc(100% - 124px);
+  height: calc(60% - 48px);
   background: black;
   border-radius: 32px;
+  padding: 24px;
 `;
 
 export default JoinFromPhone;
