@@ -1,26 +1,54 @@
 import GameObject from "./GameObject";
-
+import { SETTING } from "./setting";
 import  bird  from "../assets/bird.png";
 
 let PRINTCOUNT = 0;
 const INIT_FALL_SPEED = 5;
-const GRAVITY = 0.1;
+const GRAVITY = 0.1; 
 
 function Bird(props) {
   return (
     <GameObject
       updateFunction={(currentState) => {
         if (props.gameState.isPlaying && !props.gameState.isGameOver) {
-          for (let pipe = 0; pipe < props.gameState.pipeData.length; pipe++) {
+          for (let i = 0; i < props.gameState.pipeData.length; i++) {
+            let pipe = props.gameState.pipeData[i];
+            let topPipeY = pipe.y - SETTING.pipe.height - SETTING.pipe.gap;
+            
+            //check top pipe
             if (
-              currentState.x + currentState.width > props.gameState.pipeData[pipe].x &&
-              currentState.x < props.gameState.pipeData[pipe].x + props.gameState.pipeData[pipe].width &&
-              currentState.y + currentState.height > props.gameState.pipeData[pipe].y &&
-              currentState.y < props.gameState.pipeData[pipe].y + props.gameState.pipeData[pipe].height
+              currentState.x + currentState.width > pipe.x &&
+              currentState.x < pipe.x + SETTING.pipe.width &&
+              currentState.y + currentState.height > topPipeY &&
+              currentState.y < topPipeY + SETTING.pipe.height
             ) {
-              console.log("props");
+              console.log("hit top pipe");
               props.setGameOver(true);
             }
+            //check bottom pipe
+            else if (
+              currentState.x + currentState.width > pipe.x &&
+              currentState.x < pipe.x + SETTING.pipe.width &&
+              currentState.y + currentState.height > pipe.y &&
+              currentState.y < pipe.y + SETTING.pipe.height
+            ) {
+              console.log("height: ", pipe.height);
+              console.log("gap: ", SETTING.pipe.gap);
+              console.log("top pipe y: " + topPipeY);
+              console.log("bottom pipe y: " + pipe.y);
+              console.log("bird x: " + currentState.x);
+              console.log("bird y: " + currentState.y);
+              console.log("hit bottom pipe");
+              props.setGameOver(true);
+            } 
+            // check if hit the ground
+            else if (
+              currentState.y + currentState.height > SETTING.ground.y
+            ) {
+              console.log("hit ground");
+              props.setGameOver(true);
+            }
+            
           }
         }
         if (props.gameState.isPlaying && !props.gameState.isGameOver) {
