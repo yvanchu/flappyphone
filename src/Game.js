@@ -10,7 +10,7 @@ export const Game = () => {
     const [gameState, setGameState] = useState({
         isPlaying: false,
         isGameOver: false,
-        pipeData: new Array(NUM_PIPES).fill({x: 0, y: 0}),
+        pipeData: new Array(NUM_PIPES).fill({x: 0, y: 0, width: 50, height: 200}),
     })
     const [localCount, setLocalCount] = useState({
         value: 0
@@ -20,7 +20,11 @@ export const Game = () => {
 
     const setPipeData = (i, x, y) => {
         let currentPipeData = gameState.pipeData;
-        currentPipeData[i] = {x: x, y: y};
+        currentPipeData[i] = {
+            ...currentPipeData[i],
+            x: x,
+            y: y
+        };
         setGameState(gameState => ({
             ...gameState,
             pipeData: currentPipeData,
