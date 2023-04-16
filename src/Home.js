@@ -4,6 +4,10 @@ import "./App.css";
 import { setData, useData } from "./util/firebase";
 import QRCode from "./components/QRCode";
 
+import styled from "styled-components";
+
+import Title from './assets/logo.png';
+
 const Home = () => {
   const [inQueue, setInQueue] = useState(false);
   const [playerID, setPlayerID] = useState(localStorage.getItem("playerID"));
@@ -34,26 +38,90 @@ const Home = () => {
   }, [data, navigate, playerID]);
 
   return (
-    <div className="App">
+    <Background>
       <header className="App-header">
         {inQueue ? (
-          <>
+          <div>
             <h1>Scan to join</h1>
             <QRCode pid={playerID} />
             <p>DEBUG: {playerID}</p>
-          </>
+          </div>
         ) : (
-          <>
-            <h1>Flappy Phone</h1>
-            <p>
-              <button onClick={joinQueue}>Enter</button>
-              <em>BE THE BIRD</em>
-            </p>
-          </>
+          <Entrance>
+            <img src={Title} width={window.innerWidth * 0.5} alt="Flappy Phone" />
+            <P>
+              <ButtonHolder>
+                <ButtonBack />
+                <Button onClick={joinQueue}>ENTER</Button>
+              </ButtonHolder>
+              <Em>BE THE BIRD</Em>
+            </P>
+          </Entrance>
         )}
       </header>
-    </div>
+    </Background>
   );
 };
+
+const Background = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Button = styled.button`
+  position: absolute;
+  top: 0;
+  left: calc(50% - 100px);
+  font-family: "Russo One";
+  background: white;
+  color: black;
+  width: 200px;
+  height: 64px;
+  border-radius: 15px;
+  transform: translate(-10px, -10px);
+  transition: 0.1s ease-in;
+  cursor: pointer;
+  :hover {
+    transform: translate(-5px, -5px);
+  }
+`;
+
+const ButtonBack = styled.div`
+  position: absolute;
+  top: 0;
+  left: calc(50% - 100px);
+  width: 200px;
+  height: 64px;
+  background: #6A6A6A;
+  border-radius: 15px;
+`;
+
+const ButtonHolder = styled.div`
+`;
+
+const P = styled.p`
+  position: relative;
+`;
+
+const Entrance = styled.div`
+  font-family: "Russo One";
+  margin-top: -64px;
+`;
+
+const Em = styled.em`
+  position: absolute;
+  width: 200px;
+  top: 92px;
+  font-size: 24px;
+  left: calc(50% - 90px);
+`;
 
 export default Home;
