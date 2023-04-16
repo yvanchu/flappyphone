@@ -27,12 +27,12 @@ function Pipe(props) {
                         initObjData={{
                                 image: pipeImg,
                                 x: 200 * props.index,
-                                y: 600,
+                                y: 400,
                                 width: 50,
                                 height: 200,
                                 anchor: {
-                                x: 1,
-                                y: 1,
+                                x: 0,
+                                y: 0,
                                 },
                         }}
                 />

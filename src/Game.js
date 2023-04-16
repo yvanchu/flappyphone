@@ -9,9 +9,9 @@ export const Game = () => {
         isPlaying: false,
         isGameOver: false,
         pipeData: [
-            {x: 0, y: 0},
-            {x: 0, y: 0},
-            {x: 0, y: 0}
+            {x: 0, y: 0, width: 50, height: 200},
+            {x: 0, y: 0, width: 50, height: 200},
+            {x: 0, y: 0, width: 50, height: 200},
         ],
     })
     const [localCount, setLocalCount] = useState({
@@ -22,7 +22,11 @@ export const Game = () => {
 
     const setPipeData = (i, x, y) => {
         let currentPipeData = gameState.pipeData;
-        currentPipeData[i] = {x: x, y: y};
+        currentPipeData[i] = {
+            ...currentPipeData[i],
+            x: x,
+            y: y
+        };
         setGameState(gameState => ({
             ...gameState,
             pipeData: currentPipeData,
@@ -60,13 +64,19 @@ export const Game = () => {
         }
     }, [cloud_count]);
 
+    useEffect(() => {
+        console.log(gameState)
+    }, [gameState.gameOver])
+
   return (
     <Stage>
         <Bird
-            setGameOver={(x) => {setGameState(gameState => ({
+            setGameOver={(x) => {
+                console.log(`SDJFIOSDJFKLSDJF: ${x}`)
+                setGameState(gameState => ({
                 ...gameState,
-                isGameOver: x
-            }))}}
+                isGameOver: true
+            }));}}
             count={localCount.value}
             gameState={gameState}
         />
