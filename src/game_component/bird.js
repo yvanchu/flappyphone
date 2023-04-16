@@ -70,7 +70,7 @@ function Bird(props) {
           x: 0,
           y: 0,
         },
-        currSpeed: 5,
+        currSpeed: INIT_FALL_SPEED,
         count: 0,
       }}
     />
