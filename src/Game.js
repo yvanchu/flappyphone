@@ -1,5 +1,5 @@
 import { Stage, Container, Sprite, Text } from "@pixi/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router";
 import Bird from "./game_component/bird";
 import Pipes from "./game_component/pipes";
@@ -8,8 +8,10 @@ import { useData, setData } from "./util/firebase";
 import bg from "./assets/bg.png";
 import { SETTING, NUM_PIPES } from "./game_component/setting";
 import { TextStyle } from "pixi.js";
+import { Context } from "./components/Context";
 
 export const Game = () => {
+let context = useContext(Context);
   const [gameState, setGameState] = useState({
     isPlaying: false,
     isGameOver: false,
@@ -69,8 +71,17 @@ export const Game = () => {
   }, [playerData, localCount]);
 
   useEffect(() => {
-    console.log(gameState);
-  }, [gameState.gameOver]);
+    if (gameState.isGameOver) {
+        // update isFlapping to false
+        // console.log(context);
+        context.setIsFlapping(false)
+        context.setGameState({
+            ...context.gameState,
+            isGameOver: true,
+        })
+        console.log("game over!!!");
+    }
+  }, [gameState.isGameOver]);
 
   return (
     <>

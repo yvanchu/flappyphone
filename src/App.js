@@ -49,7 +49,7 @@ function App() {
         context.gyroscope.x > ALPHA_LOWER_BOUND &&
         context.acceleration.z > AZ_LOWER_BOUND
       ) {
-        if (!context.isFlapping) {
+        if (!context.isFlapping && !context.isGameOver) {
           context.setIsFlapping(true);
           setData(`/players/${pid}/flapCount`, playerData.flapCount + 1);
           setFlaps(flaps + 1);
