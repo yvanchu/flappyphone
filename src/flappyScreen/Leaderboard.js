@@ -4,19 +4,23 @@ import { useData } from "../util/firebase";
 
 import { useEffect, useState } from "react";
 
-import RedBird from '../assets/red_bird.png';
-import BlueBird from '../assets/blue_bird.png';
-import YellowBird from '../assets/yellow_bird.png';
-import Title from '../assets/LEADERBOARD.png';
-import Logo from '../assets/logo-wrap.png';
+import RedBird from "../assets/red_bird.png";
+import BlueBird from "../assets/blue_bird.png";
+import YellowBird from "../assets/yellow_bird.png";
+import Title from "../assets/LEADERBOARD.png";
+import Logo from "../assets/logo-wrap.png";
 
 import { useParams } from "react-router";
+import { useNavigate } from "react-router";
 
 import NameBox from "../components/NameBox";
 
 function Leaderboard() {
-  
   const { pid } = useParams();
+  const navigate = useNavigate();
+  if (!pid && localStorage.getItem("playerID")) {
+    navigate(`/flappy/flock/${localStorage.getItem("playerID")}`);
+  }
 
   const [sorted, setSorted] = useState([]);
 
@@ -30,7 +34,7 @@ function Leaderboard() {
     width: window.innerWidth,
     height: window.innerHeight,
     bird: window.innerHeight / 2.7,
-  })
+  });
 
   useEffect(() => {
     const handleResize = () => {
@@ -39,26 +43,26 @@ function Leaderboard() {
         height: window.innerHeight,
         bird: window.innerHeight / 2.7,
       });
-    }
+    };
 
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (playerData) {
       let tmp = Object.entries(playerData);
       tmp = tmp.filter((a) => {
-        return a[1].hasOwnProperty("hs")
-      })
+        return a[1].hasOwnProperty("hs");
+      });
       tmp = tmp.sort((a, b) => {
-        return b[1].hs - a[1].hs
+        return b[1].hs - a[1].hs;
       });
 
       let hmm = tmp.filter((a) => {
-        return a[0] == pid
-      })
+        return a[0] == pid;
+      });
 
       let asdf = tmp.indexOf(hmm[0]);
       console.log(asdf);
@@ -66,19 +70,19 @@ function Leaderboard() {
       tmp = tmp.slice(0, 10);
 
       let hmm2 = tmp.filter((a) => {
-        return a[0] == pid
-      })
+        return a[0] == pid;
+      });
 
       if (hmm2.length) {
-        console.log('a1');
+        console.log("a1");
         setSorted(tmp);
       } else if (hmm.length) {
-        console.log('a2');
+        console.log("a2");
         setSorted(tmp.slice(0, 9));
         setMe(hmm[0]);
         setPlace(asdf);
       } else {
-        console.log('a3');
+        console.log("a3");
         setSorted(tmp);
       }
     }
@@ -91,14 +95,15 @@ function Leaderboard() {
         <p>{Number(cloud_count)}</p>
       </header> */}
       <Column>
-        <a href="/"><Img src={Logo} width={screen.width / 5} y={5} />
-          </a>
+        <a href="/">
+          <Img src={Logo} width={screen.width / 5} y={5} />
+        </a>
         <Img A src={RedBird} height={screen.bird} y={22} />
         <ImgR src={YellowBird} height={screen.bird} y={39} />
         <Img src={BlueBird} height={screen.bird} y={58} />
       </Column>
       <Column a>
-        <img src={Title} width={0.7 * ((screen.width / 2) - 80)} />
+        <img src={Title} width={0.7 * (screen.width / 2 - 80)} />
         <Holder>
           {sorted &&
             sorted.map((e, i) => {
@@ -111,16 +116,17 @@ function Leaderboard() {
                   char={e[1].character}
                   key={i}
                 />
-              )
-            })
-          }
-          {me && sorted.length==9 && <NameBox
-            highlighted={true}
-            place={place}
-            name={me[1].name}
-            score={me[1].hs}
-            char={me[1].character}
-          />}
+              );
+            })}
+          {me && sorted.length == 9 && (
+            <NameBox
+              highlighted={true}
+              place={place}
+              name={me[1].name}
+              score={me[1].hs}
+              char={me[1].character}
+            />
+          )}
         </Holder>
       </Column>
     </Wrapper>
@@ -143,7 +149,7 @@ const Column = styled.div`
   flex: 1;
   height: 100%;
   position: relative;
-  padding: ${props => props.a ? "60px 40px" : "0"};
+  padding: ${(props) => (props.a ? "60px 40px" : "0")};
   background-color: black;
   display: flex;
   flex-direction: column;
@@ -151,14 +157,14 @@ const Column = styled.div`
 
 const Img = styled.img`
   position: absolute;
-  left: ${props => props.A ? "10%" : "7%"};
-  top: ${props => props.y}%;
+  left: ${(props) => (props.A ? "10%" : "7%")};
+  top: ${(props) => props.y}%;
 `;
 
 const ImgR = styled.img`
   position: absolute;
   right: 7%;
-  top: ${props => props.y}%;
+  top: ${(props) => props.y}%;
 `;
 
 const Holder = styled.div`
