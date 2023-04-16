@@ -29,7 +29,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (data && data[playerID]) {
+    if (
+      data &&
+      data[playerID] &&
+      data[playerID].playerState === "waiting-for-screen"
+    ) {
       if (isMobile) {
         navigate(`/flappy/phone/${playerID}`);
       } else {

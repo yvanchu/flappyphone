@@ -61,27 +61,21 @@ function App() {
   let [cooldown, setCooldown] = useState(0);
 
   useEffect(() => {
-
     if (playerData) {
       console.log("f", playerData);
     }
 
-    if(playerData && playerData.playerState === "gameOver"){
-      context.setGameState(
-        {
-          ...context.gameState,
-          isGameOver: true,
-        }
-      );
+    if (playerData && playerData.playerState === "gameOver") {
+      context.setGameState({
+        ...context.gameState,
+        isGameOver: true,
+      });
     } else if (playerData && playerData.playerState === "waiting-for-phone") {
-      context.setGameState(
-        {
-          ...context.gameState,
-          isGameOver: false,
-        }
-      );
+      context.setGameState({
+        ...context.gameState,
+        isGameOver: false,
+      });
     }
-
   }, [playerData]);
 
   useEffect(() => {
@@ -184,12 +178,15 @@ function App() {
           </Tray>
           <h3>Flap your hand up and down to fly.</h3>
           <H5>Hold on tight!</H5>
-          <img src = {Ex} width={window.innerWidth * 0.7} />
+          <img src={Ex} width={window.innerWidth * 0.7} />
           <Button onClick={handlePermissions}>Reset Sensors</Button>
         </>
       ) : (
         <JoinFromPhone
-          handlePermission={() => {setStart(true); handlePermissions();}}
+          handlePermission={() => {
+            setStart(true);
+            handlePermissions();
+          }}
           pid={pid}
           bird={birdData}
           updateBird={(x) => {
