@@ -13,7 +13,7 @@ function NameBox(props) {
                         {props.place}
                         <Name>{props.name}</Name>
                         <Score highlighted={props.highlighted}>{props.score}</Score>
-                        {true && <BirdIcon src={BOIRDS[props.char]} />}
+                        {props.highlighted && <BirdIcon src={BOIRDS[props.char]} />}
                 </Box>
         )
 }

@@ -3,10 +3,15 @@ import { setData, useData } from "./util/firebase";
 import styled from "styled-components";
 import { Game } from "./Game";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 import { Context } from "./components/Context";
 
 import Sensor from "./components/Sensor";
+
+import Yes from "./assets/yees.png";
+import No from "./assets/nor.png";
+import Ex from "./assets/how2.png";
 
 import "./App.css";
 import JoinFromPhone from "./JoinFromPhone";
@@ -20,6 +25,7 @@ function App() {
   let context = useContext(Context);
   const { pid } = useParams();
   const [playerData, loading, error] = useData(`/players/${pid}`);
+  const navigate = useNavigate();
 
   const [birdData, setBirdData] = useState({
     index: 0,
@@ -30,10 +36,19 @@ function App() {
     if (pid) {
       setData(`/players/${pid}/score`, 0);
       setData(`/players/${pid}/flapCount`, 0);
+      localStorage.setItem("playerID", pid);
     } else {
-      alert("No player id found. Go to the home page on your laptop to play!");
+      const pid = localStorage.getItem("playerID");
+      if (pid) {
+        console.log("pid found");
+        navigate(`/flappy/phone/${pid}`);
+      } else {
+        alert(
+          "No player id found. Go to the home page on your laptop to play!"
+        );
+      }
     }
-  }, [pid]);
+  }, [pid, navigate]);
 
   let [flaps, setFlaps] = useState(0);
   let [maxes, setMaxes] = useState({
@@ -50,10 +65,10 @@ function App() {
         context.acceleration.z > AZ_LOWER_BOUND
       ) {
         if (!context.isFlapping && !context.isGameOver) {
-          console.log("WEFJIODSJFIOJDIOSFJ")
+          console.log("WEFJIODSJFIOJDIOSFJ");
           context.setIsFlapping(true);
-          
-          if (playerData.hasOwnProperty('hs')) {
+
+          if (playerData.hasOwnProperty("hs")) {
             if (playerData.hs == playerData.flapCount) {
               setData(`/players/${pid}/hs`, playerData.flapCount + 1);
             }
@@ -136,8 +151,15 @@ function App() {
             </p>
             <p>{maxes.rot}</p>
             <p>{maxes.trans}</p> */}
-          <h3>You're ready to flap!</h3>
-          <button onClick={handlePermissions}>Reset Sensors</button>
+          <h3>Hold your phone face-down.</h3>
+          <Tray>
+            <img src={No} width={window.innerWidth / 3} />
+            <img src={Yes} width={window.innerWidth / 3} />
+          </Tray>
+          <h3>Flap your hand up and down to fly.</h3>
+          <H5>Hold on tight!</H5>
+          <img src = {Ex} width={window.innerWidth * 0.7} />
+          <Button onClick={handlePermissions}>Reset Sensors</Button>
         </>
       ) : (
         <JoinFromPhone
@@ -170,4 +192,28 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   font-family: "Russo One", sans-serif;
+  overflow-y: auto;
+`;
+
+const Tray = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 90%;
+  margin-bottom: 20px;
+`;
+
+const H5 = styled.h5`
+  margin-top: -8px;
+  color: #ababab;
+`;
+
+const Button = styled.button`
+  background: #ffffff;
+  color: black;
+  padding: 18px;
+  border-radius: 8px;
+  width: 65%;
+  font-family: "Russo One"
+  font-size: 14px;
 `;
