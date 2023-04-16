@@ -13,10 +13,11 @@ class ContextProvider extends Component{
         accelerationGx: { x: 0, y: 0, z: 0 },
         gyroscope:      { x: 0, y: 0, z: 0 },
         isFlapping: false,
-        bird: {x: 100, y: 350, width: 50, height: 50, anchor: {x: 1, y: 1}},
+        bird: {x: 100, y: 350, width: 50, height: 50, anchor: {x: 1, y: 1}, initFallSpeed: 5, gravity: 0.1, currSpeed: 5 },
         pipe1: {x: 200, y: 600, width: 50, height: 200, anchor: {x: 1, y: 1}},
         pipe2: {x: 400, y: 600, width: 50, height: 200, anchor: {x: 1, y: 1}},
         pipe3: {x: 600, y: 600, width: 50, height: 200, anchor: {x: 1, y: 1}},
+        gameState: {isPlaying: false, isGameOver: false},
 
         setOrientation:    (x) => { this.setState({ orientation:    x }) },
         setAcceleration:   (x) => { this.setState({ acceleration:   x }) },
@@ -28,6 +29,7 @@ class ContextProvider extends Component{
         setPipe1:          (x) => { this.setState({ pipe1:          x }) },
         setPipe2:          (x) => { this.setState({ pipe2:          x }) },
         setPipe3:          (x) => { this.setState({ pipe3:          x }) },
+        setGameState:      (x) => { this.setState({ gameState:      x }) },
     };
   }
 

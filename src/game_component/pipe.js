@@ -6,17 +6,22 @@ function Pipe(props) {
         return (
                 <GameObject
                         updateFunction={(currentState) => {
-                                let nextX = currentState.x - 1;
-                                if (nextX < -100) {
-                                nextX = 600;
+                                props.propagate(currentState.x, currentState.y);
+                                if (props.gameState.isPlaying) {
+                                        let nextX = currentState.x - 1;
+                                        if (nextX < -100) {
+                                        nextX = 600;
+                                        }
+        
+                                        let nextState = {
+                                        ...currentState,
+                                        x: nextX,
+                                        };
+                                        
+                                        return nextState;
+                                } else {
+                                        return currentState;
                                 }
-
-                                let nextState = {
-                                ...currentState,
-                                x: nextX,
-                                };
-                                
-                                return nextState;
                         }}
 
                         initObjData={{
