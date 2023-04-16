@@ -6,7 +6,7 @@ import QRCode from "./components/QRCode";
 
 import styled from "styled-components";
 
-import Title from './assets/logo.png';
+import Title from "./assets/logo.png";
 
 const Home = () => {
   const [inQueue, setInQueue] = useState(false);
@@ -42,13 +42,17 @@ const Home = () => {
       <header className="App-header">
         {inQueue ? (
           <div>
-            <h1>Scan to join</h1>
+            <h1>Scan with 📱 to join (Keep this tab open)</h1>
             <QRCode pid={playerID} />
-            <p>DEBUG: {playerID}</p>
+            {/* <p>ID for Debugging: {playerID}</p> */}
           </div>
         ) : (
           <Entrance>
-            <img src={Title} width={window.innerWidth * 0.5} alt="Flappy Phone" />
+            <img
+              src={Title}
+              width={window.innerWidth * 0.5}
+              alt="Flappy Phone"
+            />
             <P>
               <ButtonHolder>
                 <ButtonBack />
@@ -100,12 +104,11 @@ const ButtonBack = styled.div`
   left: calc(50% - 100px);
   width: 200px;
   height: 64px;
-  background: #6A6A6A;
+  background: #6a6a6a;
   border-radius: 15px;
 `;
 
-const ButtonHolder = styled.div`
-`;
+const ButtonHolder = styled.div``;
 
 const P = styled.p`
   position: relative;
