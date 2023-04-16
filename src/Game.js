@@ -102,6 +102,7 @@ let context = useContext(Context);
             />
             
             <Bird
+            getX={() => {return context.isFlapping}}
               setGameOver={(x) => {
                 setGameState((gameState) => ({
                   ...gameState,
@@ -131,22 +132,47 @@ let context = useContext(Context);
             />
             <Ground />
             <Text
-            text={playerData.flapCount}
-            anchor={0.5}
-            x={window.innerWidth / 2}
-            y={150}
-            style={
-            new TextStyle({
-                align: 'center',
-                fontFamily: '"Russo One", sans-serif',
-                fontSize: 50,
-                fontWeight: 600,
-                stroke: '#000000',
-                strokeThickness: 5,
-                fill: ['#ffffff'], // gradient
-            })
-            }
-  />
+                         text={playerData.flapCount}
+               anchor={0.5}
+               x={window.innerWidth / 2}
+               y={150}
+               style={
+                 new TextStyle({
+                   align: "center",
+                   fontFamily: '"Russo One", sans-serif',
+                   fontSize: 50,
+                   fontWeight: 600,
+                   stroke: "#000000",
+                   strokeThickness: 5,
+                   fill: ["#ffffff"], // gradient
+                 })
+               }
+             />
+             {gameState.isGameOver ? (
+               <>
+                 <Text
+                   text={
+                     "Game Over! \n Refresh if you think you can score better!"
+                   }
+                   anchor={0.5}
+                   x={window.innerWidth / 2}
+                   y={250}
+                   style={
+                     new TextStyle({
+                       align: "center",
+                       fontFamily: '"Russo One", sans-serif',
+                       fontSize: 25,
+                       fontWeight: 600,
+                       stroke: "#000000",
+                       strokeThickness: 5,
+                       fill: ["#ffffff"], // gradient
+                     })
+                   }
+                 />
+               </>
+             ) : (
+               <></>
+             )}
           </Container>
         </Stage>
       )}
