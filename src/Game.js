@@ -130,9 +130,11 @@ export const Game = () => {
             style={
             new TextStyle({
                 align: 'center',
-                fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+                fontFamily: '"Russo One", sans-serif',
                 fontSize: 50,
                 fontWeight: 600,
+                stroke: '#000000',
+                strokeThickness: 5,
                 fill: ['#ffffff'], // gradient
             })
             }
