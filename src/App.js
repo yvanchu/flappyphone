@@ -42,7 +42,6 @@ function App() {
     } else {
       const pid = localStorage.getItem("playerID");
       if (pid) {
-        console.log("pid found");
         navigate(`/flappy/phone/${pid}`);
       } else {
         alert(

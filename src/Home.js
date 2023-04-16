@@ -37,6 +37,7 @@ const Home = () => {
       if (isMobile) {
         navigate(`/flappy/phone/${playerID}`);
       } else {
+        console.log("navigating to screen");
         navigate(`/flappy/screen/${playerID}`);
       }
     }
