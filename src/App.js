@@ -52,6 +52,14 @@ function App() {
         if (!context.isFlapping && !context.isGameOver) {
           console.log("WEFJIODSJFIOJDIOSFJ")
           context.setIsFlapping(true);
+          
+          if (playerData.hasOwnProperty('hs')) {
+            if (playerData.hs == playerData.flapCount) {
+              setData(`/players/${pid}/hs`, playerData.flapCount + 1);
+            }
+          } else {
+            setData(`/players/${pid}/hs`, playerData.flapCount + 1);
+          }
           setData(`/players/${pid}/flapCount`, playerData.flapCount + 1);
           setFlaps(flaps + 1);
         }
