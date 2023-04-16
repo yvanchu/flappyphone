@@ -108,6 +108,7 @@ function Leaderboard() {
                   place={i + 1}
                   name={e[1].name}
                   score={e[1].hs}
+                  char={e[1].character}
                   key={i}
                 />
               )
@@ -118,6 +119,7 @@ function Leaderboard() {
             place={place}
             name={me[1].name}
             score={me[1].hs}
+            char={me[1].character}
           />}
         </Holder>
       </Column>

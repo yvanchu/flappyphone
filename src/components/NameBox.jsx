@@ -1,11 +1,19 @@
 import styled from "styled-components";
 
+import RedBird from '../assets/redNotFlapping.png';
+import BlueBird from '../assets/blueNotFlapping.png';
+import YellowBird from '../assets/yellowNotFlapping.png';
+
+
+const BOIRDS = [RedBird, BlueBird, YellowBird];
+
 function NameBox(props) {
         return (
                 <Box highlighted={props.highlighted}>
                         {props.place}
                         <Name>{props.name}</Name>
                         <Score highlighted={props.highlighted}>{props.score}</Score>
+                        {true && <BirdIcon src={BOIRDS[props.char]} />}
                 </Box>
         )
 }
@@ -24,6 +32,7 @@ const Box = styled.div`
         border-radius: 15px;
         padding: 0 15px;
         margin: 4px 0px;
+        z-index: 5;
 `;
 
 const Name = styled.div`
@@ -34,4 +43,9 @@ const Score = styled.div`
 position: absolute;
 right: 15px;
 color: ${props => props.highlighted ? "#000000" : "#ffffff"};
+`;
+
+const BirdIcon = styled.img`
+        width: 40px;
+        margin-left: 8px;
 `;
