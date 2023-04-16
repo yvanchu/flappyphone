@@ -92,7 +92,7 @@ const Button = styled.button`
   height: 64px;
   border-radius: 15px;
   transform: translate(-10px, -10px);
-  transition: 0.1s ease-in;
+  transition: 0.05s ease-in;
   cursor: pointer;
   :hover {
     transform: translate(-5px, -5px);
@@ -113,11 +113,12 @@ const ButtonHolder = styled.div``;
 
 const P = styled.p`
   position: relative;
+  margin-top: 42px;
 `;
 
 const Entrance = styled.div`
   font-family: "Russo One";
-  margin-top: -64px;
+  margin-top: -82px;
 `;
 
 const Em = styled.em`
