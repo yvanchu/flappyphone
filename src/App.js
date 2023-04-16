@@ -2,12 +2,14 @@ import { useState, useEffect, useContext } from "react";
 import { setData, useData } from "./util/firebase";
 import styled from "styled-components";
 import { Game } from "./Game";
+import { useParams } from "react-router";
 
 import { Context } from "./components/Context";
 
 import Sensor from "./components/Sensor";
 
 import "./App.css";
+import JoinFromPhone from "./JoinFromPhone";
 
 const ALPHA_LOWER_BOUND = 300;
 const ALPHA_UPPER_BOUND = 1010;
@@ -16,6 +18,17 @@ const AZ_UPPER_BOUND = 69;
 
 function App() {
   let context = useContext(Context);
+  const { pid } = useParams();
+  const [playerData, loading, error] = useData(`/players/${pid}`);
+
+  useEffect(() => {
+    if (pid) {
+      setData(`/players/${pid}/score`, 0);
+      setData(`/players/${pid}/flapCount`, 0);
+    } else {
+      alert("No player id found. Go to the home page on your laptop to play!");
+    }
+  }, [pid]);
 
   let [flaps, setFlaps] = useState(0);
   let [maxes, setMaxes] = useState({
@@ -25,17 +38,15 @@ function App() {
 
   let [cooldown, setCooldown] = useState(0);
 
-  const [cloud_count, loading, error] = useData("/count");
-
   useEffect(() => {
-    if (cooldown < 1) {
+    if (playerData && playerData.flapCount > -1 && cooldown < 1) {
       if (
         context.gyroscope.x > ALPHA_LOWER_BOUND &&
         context.acceleration.z > AZ_LOWER_BOUND
       ) {
         if (!context.isFlapping) {
           context.setIsFlapping(true);
-          setData("/count", flaps + 1);
+          setData(`/players/${pid}/flapCount`, playerData.flapCount + 1);
           setFlaps(flaps + 1);
         }
       } else {
@@ -58,7 +69,7 @@ function App() {
     } else {
       setCooldown(cooldown - 1);
     }
-  }, [context]);
+  }, [context, playerData, cooldown, flaps, maxes, pid]);
 
   function handleOrientation(event) {
     context.setOrientation({ x: event.alpha, y: event.beta, z: event.gamma });
@@ -99,25 +110,27 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          <button onClick={handlePermissions}>Start</button>
-        </p>
+        <p>Flap to Start</p>(
         {loading ? (
-          <>Loading...</>
-        ) : (
+          "Loading..."
+        ) : playerData.playerState === "waiting-for-screen" ? (
           <>
             <h3>Sensor Values</h3>
             <Sensor fieldName={"gyroscope"} threshold={200} />
             <Sensor fieldName={"acceleration"} threshold={7} />
             <p>
-              {flaps} | {cloud_count}
+              {flaps} |{" "}
+              {playerData && playerData.flapCount ? playerData.flapCount : 0}
             </p>
             <p>{maxes.rot}</p>
             <p>{maxes.trans}</p>
           </>
+        ) : (
+          <JoinFromPhone handlePermission={handlePermissions} pid={pid} />
         )}
+        )
       </header>
-      <Game />
+      {/* <Game /> */}
     </div>
   );
 }

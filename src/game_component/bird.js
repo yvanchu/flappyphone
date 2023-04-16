@@ -50,8 +50,6 @@ function Bird(props) {
             }
             
           }
-        }
-        if (props.gameState.isPlaying && !props.gameState.isGameOver) {
           let nextState = {...currentState};
           nextState.y -= currentState.currSpeed;
           nextState.currSpeed -= GRAVITY;
