@@ -1,10 +1,11 @@
-// a home screen that takes in a name and has a purple play button
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import QRCodeStyling from "qr-code-styling";
 import "./App.css";
 import { setData, useData } from "./util/firebase";
 import bird from "./assets/bird.png";
+
+//TODO: QR code is super buggy
 
 const qrCode = new QRCodeStyling({
   width: 300,
@@ -22,58 +23,61 @@ const qrCode = new QRCodeStyling({
 });
 
 const Home = () => {
-  const [name, setName] = useState("");
   const [url, setURL] = useState("");
+  const [inQueue, setInQueue] = useState(false);
   const [playerID, setPlayerID] = useState(0);
   const navigate = useNavigate();
   const ref = useRef(null);
 
+  useEffect(() => {
+    qrCode.append(ref.current);
+    if (localStorage.getItem("playerID") === null) {
+      localStorage.setItem("playerID", Math.floor(Math.random() * 1000000000));
+    }
+    setPlayerID(localStorage.getItem("playerID"));
+  }, []);
+
   const [data, loading, error] = useData(`/players`);
 
   useEffect(() => {
-    qrCode.append(ref.current);
-  }, []);
+    qrCode.update({
+      data: `https://0204-165-124-85-12.ngrok-free.app/flappy/phone/${playerID}`,
+    });
+  }, [playerID]);
 
-  const handleName = (e) => {
-    setName(e.target.value);
-  };
-
-  const handlePlay = () => {
-    if (name !== "") {
-      const id = Math.floor(Math.random() * 1000000000);
-      setData(`/players/${id}/name`, name);
-      setPlayerID(id);
-      setURL(`https://0204-165-124-85-12.ngrok-free.app/flappy/phone/${id}`);
-    }
+  const joinQueue = () => {
+    setData(`/players/${playerID}/playerState`, "waiting-for-phone");
+    setInQueue(true);
   };
 
   useEffect(() => {
-    if (data && playerID in data && "flapCount" in data[playerID]) {
+    if (
+      data &&
+      data[playerID] &&
+      data[playerID]["playerState"] === "waiting-for-screen"
+    ) {
       navigate(`/flappy/screen/${playerID}`);
     }
-  });
-
-  useEffect(() => {
-    qrCode.update({
-      data: url,
-    });
-  }, [url]);
+  }, [data, navigate, playerID]);
 
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          <input
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={handleName}
-          />
-        </p>
-        <p>
-          <button onClick={handlePlay}>Play</button>
-        </p>
-        <div ref={ref} />
+        {inQueue ? (
+          <>
+            <h1>Scan to join</h1>
+            <div ref={ref} />
+            <p>DEBUG: {playerID}</p>
+          </>
+        ) : (
+          <>
+            <h1>Flappy Phone</h1>
+            <p>
+              <button onClick={joinQueue}>Enter</button>
+              <em>BE THE BIRD</em>
+            </p>
+          </>
+        )}
       </header>
     </div>
   );
