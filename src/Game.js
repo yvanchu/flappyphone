@@ -60,8 +60,15 @@ export const Game = () => {
 
   return (
     <Stage>
-      <Bird count={localCount.value} gameState={gameState} />
-      <Pipes gameState={gameState} setPipeData={(a, b, c) => setPipeData(a, b, c)} />
+        <Bird
+            setGameOver={(x) => {setGameState(gameState => ({
+                ...gameState,
+                isGameOver: x
+            }))}}
+            count={localCount.value}
+            gameState={gameState}
+        />
+        <Pipes gameState={gameState} setPipeData={(a, b, c) => setPipeData(a, b, c)} />
     </Stage>
   );
 };

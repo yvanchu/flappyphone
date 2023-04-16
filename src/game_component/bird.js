@@ -2,6 +2,9 @@ import GameObject from "./GameObject";
 
 import  bird  from "../assets/bird.png";
 
+const INIT_FALL_SPEED = 5;
+const GRAVITY = 0.1;
+
 function Bird(props) {
   return (
     <GameObject
@@ -10,12 +13,16 @@ function Bird(props) {
 
           let nextState = {...currentState};
           nextState.y -= currentState.currSpeed;
-          nextState.currSpeed -= currentState.gravity;
+          nextState.currSpeed -= GRAVITY;
           
-          if (currentState.flaps < props.count) {
-            nextState.flaps = props.count;
-            nextState.currSpeed = currentState.initFallSpeed;
+          if (currentState.count < props.count) {
+            nextState.count = props.count;
+            nextState.currSpeed = INIT_FALL_SPEED;
           }
+
+          // let collided = false;
+          // console.log(props.gameState.pipeData[0].x);
+          // props.setGameOver(collided);
           
           return nextState;
         } else {
@@ -32,10 +39,8 @@ function Bird(props) {
           x: 1,
           y: 1,
         },
-        initFallSpeed: 5,
-        gravity: 0.1,
         currSpeed: 5,
-        flaps: 0,
+        count: 0,
       }}
     />
   );
