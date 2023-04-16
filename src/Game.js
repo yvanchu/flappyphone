@@ -71,6 +71,10 @@ let context = useContext(Context);
   }, [playerData, localCount]);
 
   useEffect(() => {
+    console.log("F", context.isFlapping);
+  }, [context]);
+
+  useEffect(() => {
     if (gameState.isGameOver) {
         // update isFlapping to false
         // console.log(context);
@@ -99,6 +103,7 @@ let context = useContext(Context);
             />
             
             <Bird
+              getX={() => {return context.isFlapping}}
               setGameOver={(x) => {
                 setGameState((gameState) => ({
                   ...gameState,

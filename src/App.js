@@ -50,6 +50,7 @@ function App() {
         context.acceleration.z > AZ_LOWER_BOUND
       ) {
         if (!context.isFlapping && !context.isGameOver) {
+          console.log("WEFJIODSJFIOJDIOSFJ")
           context.setIsFlapping(true);
           setData(`/players/${pid}/flapCount`, playerData.flapCount + 1);
           setFlaps(flaps + 1);
