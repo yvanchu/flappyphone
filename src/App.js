@@ -35,7 +35,7 @@ function App() {
       ) {
         if (!context.isFlapping) {
           context.setIsFlapping(true);
-          setData("/count", flaps + 1);
+          setData("/count", cloud_count + 1);
           setFlaps(flaps + 1);
         }
       } else {
