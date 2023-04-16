@@ -1,4 +1,4 @@
-import { Stage, Container, Sprite } from "@pixi/react";
+import { Stage, Container, Sprite, Text } from "@pixi/react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import Bird from "./game_component/bird";
@@ -7,6 +7,7 @@ import Ground from "./game_component/ground";
 import { useData, setData } from "./util/firebase";
 import bg from "./assets/bg.png";
 import { SETTING, NUM_PIPES } from "./game_component/setting";
+import { TextStyle } from "pixi.js";
 
 export const Game = () => {
   const [gameState, setGameState] = useState({
@@ -17,6 +18,7 @@ export const Game = () => {
     pipeData: new Array(NUM_PIPES).fill({ x: 0, y: 0, width: 50, height: 200 }),
   });
   const [localCount, setLocalCount] = useState(0);
+  const [score, setScore] = useState(0);
 
   const navigate = useNavigate();
   const { pid } = useParams();
@@ -47,6 +49,11 @@ export const Game = () => {
         ...gameState,
         isPlaying: true,
       }));
+      setScore(0);
+    } else {
+        if (!gameState.isGameOver) {
+            setScore((score) => score + 1);
+        }
     }
   };
 
@@ -85,6 +92,7 @@ export const Game = () => {
               width={window.innerWidth}
               height={window.innerHeight}
             />
+            
             <Bird
               setGameOver={(x) => {
                 setGameState((gameState) => ({
@@ -113,6 +121,21 @@ export const Game = () => {
               setPipeData={(a, b, c) => setPipeData(a, b, c)}
             />
             <Ground />
+            <Text
+            text={score}
+            anchor={0.5}
+            x={window.innerWidth / 2}
+            y={150}
+            style={
+            new TextStyle({
+                align: 'center',
+                fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+                fontSize: 50,
+                fontWeight: 600,
+                fill: ['#ffffff'], // gradient
+            })
+            }
+  />
           </Container>
         </Stage>
       )}
