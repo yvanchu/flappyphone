@@ -67,7 +67,7 @@ function Bird(props) {
         }
       }}
       initObjData={{
-        image: BIRDLIST[props.character],
+        image: BIRDLIST[props.character ?? 0],
         x: 100,
         y: 350,
         width: 70,
