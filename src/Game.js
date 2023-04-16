@@ -100,6 +100,7 @@ export const Game = () => {
                   isGameOver: true,
                 }));
               }}
+              character={playerData.character}
               count={playerData.flapCount}
               gameState={gameState}
             />

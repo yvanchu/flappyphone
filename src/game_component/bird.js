@@ -2,6 +2,12 @@ import GameObject from "./GameObject";
 import { SETTING } from "./setting";
 import bird from "../assets/bird.png";
 
+import RedBird from '../assets/ActualRedBird.png';
+import YellowBird from '../assets/ActualYellowBird.png';
+import BlueBird from '../assets/ActualBlueBird.png';
+
+const BIRDLIST = [RedBird, YellowBird, BlueBird];
+
 let PRINTCOUNT = 0;
 const INIT_FALL_SPEED = 3;
 const GRAVITY = 0.1;
@@ -61,7 +67,7 @@ function Bird(props) {
         }
       }}
       initObjData={{
-        image: bird,
+        image: BIRDLIST[props.character],
         x: 100,
         y: 350,
         width: 50,
