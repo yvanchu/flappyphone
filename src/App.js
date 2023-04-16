@@ -21,6 +21,11 @@ function App() {
   const { pid } = useParams();
   const [playerData, loading, error] = useData(`/players/${pid}`);
 
+  const [birdData, setBirdData] = useState({
+    index: 0,
+    photo: null,
+  });
+
   useEffect(() => {
     if (pid) {
       setData(`/players/${pid}/score`, 0);
@@ -69,7 +74,7 @@ function App() {
     } else {
       setCooldown(cooldown - 1);
     }
-  }, [context, playerData, cooldown, flaps, maxes, pid]);
+  }, [context, playerData, flaps, maxes, pid]);
 
   function handleOrientation(event) {
     context.setOrientation({ x: event.alpha, y: event.beta, z: event.gamma });
@@ -108,9 +113,7 @@ function App() {
 
   // display the values of the sensors on the screen rounded to 2 decimal places
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Flap to Start</p>(
+    <Wrapper>
         {loading ? (
           "Loading..."
         ) : playerData.playerState === "waiting-for-screen" ? (
@@ -126,13 +129,30 @@ function App() {
             <p>{maxes.trans}</p>
           </>
         ) : (
-          <JoinFromPhone handlePermission={handlePermissions} pid={pid} />
-        )}
+          <JoinFromPhone handlePermission={handlePermissions} pid={pid} bird={birdData} updateBird={(x) => {
+            setBirdData(x);
+          }} />
         )
-      </header>
+        }
       {/* <Game /> */}
-    </div>
+    </Wrapper>
   );
 }
 
 export default App;
+
+const Wrapper = styled.div`
+  background: #000000;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Russo One", sans-serif;
+`;
