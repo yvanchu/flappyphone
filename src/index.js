@@ -13,9 +13,9 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/flappy/">
-          <Route path="screen" element={<Game />} />
-          <Route path="phone" element={<App />} />
-          <Route path="leaderboard" element={<Leaderboard />} />
+          <Route path="screen/:pid" element={<Game />} />
+          <Route path="phone/:pid" element={<App />} />
+          <Route path="flock" element={<Leaderboard />} />
         </Route>
       </Routes>
     </ContextProvider>

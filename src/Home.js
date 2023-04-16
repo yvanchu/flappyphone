@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import QRCodeStyling from "qr-code-styling";
 import "./App.css";
-// reference the bird image
+import { setData, useData } from "./util/firebase";
 import bird from "./assets/bird.png";
 
 const qrCode = new QRCodeStyling({
@@ -18,7 +18,7 @@ const qrCode = new QRCodeStyling({
     crossOrigin: "anonymous",
     margin: 20,
   },
-  data: "https://flappy-bird-clone-1.netlify.app/flappy/phone",
+  data: "https://0204-165-124-85-12.ngrok-free.app/flappy/phone",
 });
 
 const Home = () => {
@@ -26,9 +26,12 @@ const Home = () => {
   const [showQRCode, setShowQRCode] = useState(false);
   const [url, setURL] = useState("");
   const [phoneDetected, setPhoneDetected] = useState(false);
+  const [playerID, setPlayerID] = useState(0);
   //TODO: set phone detected to true when phone is detected
   const navigate = useNavigate();
   const ref = useRef(null);
+
+  const [data, loading, error] = useData(`/players`);
 
   useEffect(() => {
     qrCode.append(ref.current);
@@ -42,17 +45,18 @@ const Home = () => {
     // TODO: set name in context and database
     if (name !== "") {
       setShowQRCode(true);
-      setURL(
-        `https://flappy-bird-clone-1.netlify.app/flappy/phone?name=${name}`
-      );
+      const id = Math.floor(Math.random() * 1000000000);
+      setData(`/players/${id}/name`, name);
+      setPlayerID(id);
+      setURL(`https://0204-165-124-85-12.ngrok-free.app/flappy/phone/${id}`);
     }
   };
 
   useEffect(() => {
-    if (phoneDetected && showQRCode) {
-      navigate("/flappy/screen");
+    if (data && playerID in data && "flapCount" in data[playerID]) {
+      navigate(`/flappy/screen/${playerID}`);
     }
-  }, [showQRCode, navigate, phoneDetected]);
+  });
 
   useEffect(() => {
     qrCode.update({
