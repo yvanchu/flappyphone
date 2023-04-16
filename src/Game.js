@@ -45,7 +45,9 @@ export const Game = () => {
         setData("/count", 0);
 
         window.addEventListener("keydown", (event) => {
-            handleFlap();
+            if (event.key === " ") {
+                handleFlap();
+            }
         })
     }, []);
 
