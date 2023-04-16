@@ -38,7 +38,7 @@ function App() {
   let [cooldown, setCooldown] = useState(0);
 
   useEffect(() => {
-    if (playerData && playerData.flapCount && cooldown < 1) {
+    if (playerData && playerData.flapCount > -1 && cooldown < 1) {
       if (
         context.gyroscope.x > ALPHA_LOWER_BOUND &&
         context.acceleration.z > AZ_LOWER_BOUND

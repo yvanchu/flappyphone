@@ -23,11 +23,8 @@ const qrCode = new QRCodeStyling({
 
 const Home = () => {
   const [name, setName] = useState("");
-  const [showQRCode, setShowQRCode] = useState(false);
   const [url, setURL] = useState("");
-  const [phoneDetected, setPhoneDetected] = useState(false);
   const [playerID, setPlayerID] = useState(0);
-  //TODO: set phone detected to true when phone is detected
   const navigate = useNavigate();
   const ref = useRef(null);
 
@@ -42,9 +39,7 @@ const Home = () => {
   };
 
   const handlePlay = () => {
-    // TODO: set name in context and database
     if (name !== "") {
-      setShowQRCode(true);
       const id = Math.floor(Math.random() * 1000000000);
       setData(`/players/${id}/name`, name);
       setPlayerID(id);

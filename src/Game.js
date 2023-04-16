@@ -15,9 +15,7 @@ export const Game = () => {
       { x: 0, y: 0 },
     ],
   });
-  const [localCount, setLocalCount] = useState({
-    value: 0,
-  });
+  const [localCount, setLocalCount] = useState(0);
 
   const navigate = useNavigate();
   const { pid } = useParams();
@@ -45,13 +43,10 @@ export const Game = () => {
         isPlaying: true,
       }));
     }
-    setLocalCount((localCount) => ({
-      value: localCount.value + 1,
-    }));
   };
 
   useEffect(() => {
-    setData("/count", 0);
+    setData(`/players/${pid}/flapCount`, 0);
 
     window.addEventListener("keydown", (event) => {
       handleFlap();
@@ -59,22 +54,26 @@ export const Game = () => {
   }, []);
 
   useEffect(() => {
-    if (playerData.flapCount > localCount.value) {
-      setLocalCount((localCount) => ({
-        value: playerData.flapCount,
-      }));
+    if (playerData && playerData.flapCount > localCount) {
+      setLocalCount(playerData.flapCount);
       handleFlap();
     }
-  }, [playerData.flapCount, localCount.value]);
+  }, [playerData, localCount]);
 
   return (
-    <Stage>
-      <Bird count={localCount.value} gameState={gameState} />
-      <Pipes
-        gameState={gameState}
-        setPipeData={(a, b, c) => setPipeData(a, b, c)}
-      />
-    </Stage>
+    <>
+      {loading ? (
+        <p>loading</p>
+      ) : (
+        <Stage>
+          <Bird count={playerData.flapCount} gameState={gameState} />
+          <Pipes
+            gameState={gameState}
+            setPipeData={(a, b, c) => setPipeData(a, b, c)}
+          />
+        </Stage>
+      )}
+    </>
   );
 };
 
