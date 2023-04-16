@@ -24,12 +24,15 @@ function App() {
   });
 
   let [cooldown, setCooldown] = useState(0);
-  
+
   const [cloud_count, loading, error] = useData("/count");
 
   useEffect(() => {
     if (cooldown < 1) {
-      if (context.gyroscope.x > ALPHA_LOWER_BOUND && context.acceleration.z > AZ_LOWER_BOUND) {
+      if (
+        context.gyroscope.x > ALPHA_LOWER_BOUND &&
+        context.acceleration.z > AZ_LOWER_BOUND
+      ) {
         if (!context.isFlapping) {
           context.setIsFlapping(true);
           setData("/count", flaps + 1);
@@ -38,7 +41,7 @@ function App() {
       } else {
         context.setIsFlapping(false);
       }
-  
+
       if (context.gyroscope.x > maxes.rot) {
         setMaxes({
           ...maxes,
@@ -56,11 +59,6 @@ function App() {
       setCooldown(cooldown - 1);
     }
   }, [context]);
-
-  useEffect(() => {
-    const timer = flaps > 0 && setInterval(() => setFlaps(flaps - 1), 1000);
-    return () => clearInterval(timer);
-  }, [flaps]);
 
   function handleOrientation(event) {
     context.setOrientation({ x: event.alpha, y: event.beta, z: event.gamma });
@@ -104,9 +102,10 @@ function App() {
         <p>
           <button onClick={handlePermissions}>Start</button>
         </p>
-        {loading
-        ? <>Loading...</>
-        : <>
+        {loading ? (
+          <>Loading...</>
+        ) : (
+          <>
             <h3>Sensor Values</h3>
             <Sensor fieldName={"gyroscope"} threshold={200} />
             <Sensor fieldName={"acceleration"} threshold={7} />
@@ -116,7 +115,7 @@ function App() {
             <p>{maxes.rot}</p>
             <p>{maxes.trans}</p>
           </>
-        }
+        )}
       </header>
       <Game />
     </div>
