@@ -16,6 +16,7 @@ function GameObject(props) {
       y={objData.y}
       height={objData.height}
       width={objData.width}
+      rotation={objData.rotation ? objData.rotation : 0}
       anchor={{ x: objData.anchor.x, y: objData.anchor.y }}
     />
   );

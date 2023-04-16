@@ -1,35 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import QRCodeStyling from "qr-code-styling";
 import "./App.css";
 import { setData, useData } from "./util/firebase";
-import bird from "./assets/bird.png";
-
-//TODO: QR code is super buggy
-
-const qrCode = new QRCodeStyling({
-  width: 300,
-  height: 300,
-  image: bird,
-  dotsOptions: {
-    color: "#4caf50",
-    type: "rounded",
-  },
-  imageOptions: {
-    crossOrigin: "anonymous",
-    margin: 20,
-  },
-  data: `https://0204-165-124-85-12.ngrok-free.app/flappy/phone/`,
-});
+import QRCode from "./components/QRCode";
 
 const Home = () => {
   const [inQueue, setInQueue] = useState(false);
   const [playerID, setPlayerID] = useState(localStorage.getItem("playerID"));
   const navigate = useNavigate();
-  const ref = useRef(null);
 
   useEffect(() => {
-    qrCode.append(ref.current);
     if (localStorage.getItem("playerID") === null) {
       localStorage.setItem("playerID", Math.floor(Math.random() * 1000000000));
     }
@@ -37,12 +17,6 @@ const Home = () => {
   }, []);
 
   const [data, loading, error] = useData(`/players`);
-
-  useEffect(() => {
-    qrCode.update({
-      data: `https://0204-165-124-85-12.ngrok-free.app/flappy/phone/${playerID}`,
-    });
-  }, [playerID]);
 
   const joinQueue = () => {
     setData(`/players/${playerID}/playerState`, "waiting-for-phone");
@@ -65,6 +39,7 @@ const Home = () => {
         {inQueue ? (
           <>
             <h1>Scan to join</h1>
+            <QRCode pid={playerID} />
             <p>DEBUG: {playerID}</p>
           </>
         ) : (
@@ -76,7 +51,6 @@ const Home = () => {
             </p>
           </>
         )}
-        <div ref={ref} />
       </header>
     </div>
   );
