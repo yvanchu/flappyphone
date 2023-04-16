@@ -6,18 +6,58 @@ import { Context } from "./components/Context";
 // import { Pipe } from "./game_component/pipe";
 import  bird  from "./assets/bird.png"
 import pipeImg from "./assets/pipe.png"
+import useKeypress from 'react-use-keypress';
+
+function collide(bird, pipe){
+    if(bird.x + bird.width >= pipe.x && bird.x <= pipe.x + pipe.width){
+        if(bird.y + bird.height >= pipe.y && bird.y <= pipe.y + pipe.height){
+            return true;
+        }
+    }
+    return false;
+}
+
+function checkCollide(bird, pipes){
+    let isCollide = false;
+    pipes.forEach((pipe, index) => {
+        if(collide(bird, pipe)){
+            isCollide = true;
+        }
+    })
+    return isCollide;
+}
 
 export const Game = () =>
 {
   let context = useContext(Context);
-  console.log("context", context);
+  const pipes = [context.pipe1, context.pipe2, context.pipe3]
+  let gameState = context.gameState
+
+  useKeypress(' ', () => {
+    console.log('You pressed the space key!');
+    if ( !gameState.isPlaying) {
+        gameState.isPlaying = true;
+        context.setGameState(gameState);
+    }
+    let bird = context.bird;
+    bird.currSpeed = bird.initFallSpeed;
+    context.setBird(bird);
+    });
 
     const Bird = () =>
     {
     useTick((delta) => {
-        let bird = context.bird;
-        // bird.x += 1;
-        // context.setBird(bird);
+        if (gameState.isPlaying && !gameState.isGameOver) {
+            let bird = context.bird;
+            bird.y -= bird.currSpeed;
+            bird.currSpeed -= bird.gravity;
+            context.setBird(bird);
+            if (checkCollide(context.bird, pipes)) {
+                gameState.isGameOver = true;
+                context.setGameState(gameState);
+                console.log("game over!");
+            }
+        }
     });
     
     return (
@@ -33,17 +73,18 @@ export const Game = () =>
     }
 
     const Pipes = () => {
-        let pipes = [context.pipe1, context.pipe2, context.pipe3]
         useTick((delta) => {
-            pipes.forEach((pipe, index) => {
-                pipe.x -= 1;
-                if(pipe.x < -100){
-                    pipe.x = 600;
-                }
-            });
-            context.setPipe1(pipes[0]);
-            context.setPipe2(pipes[1]);
-            context.setPipe3(pipes[2]);
+            if (gameState.isPlaying && !gameState.isGameOver) {
+                pipes.forEach((pipe, index) => {
+                    pipe.x -= 1;
+                    if(pipe.x < -100){
+                        pipe.x = 600;
+                    }
+                });
+                context.setPipe1(pipes[0]);
+                context.setPipe2(pipes[1]);
+                context.setPipe3(pipes[2]);
+            }
         });
         return (
             <Container>
