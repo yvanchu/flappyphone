@@ -3,6 +3,7 @@ import { setData, useData } from "./util/firebase";
 import styled from "styled-components";
 import { Game } from "./Game";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 import { Context } from "./components/Context";
 
@@ -20,6 +21,7 @@ function App() {
   let context = useContext(Context);
   const { pid } = useParams();
   const [playerData, loading, error] = useData(`/players/${pid}`);
+  const navigate = useNavigate();
 
   const [birdData, setBirdData] = useState({
     index: 0,
@@ -30,10 +32,19 @@ function App() {
     if (pid) {
       setData(`/players/${pid}/score`, 0);
       setData(`/players/${pid}/flapCount`, 0);
+      localStorage.setItem("playerID", pid);
     } else {
-      alert("No player id found. Go to the home page on your laptop to play!");
+      const pid = localStorage.getItem("playerID");
+      if (pid) {
+        console.log("pid found");
+        navigate(`/flappy/phone/${pid}`);
+      } else {
+        alert(
+          "No player id found. Go to the home page on your laptop to play!"
+        );
+      }
     }
-  }, [pid]);
+  }, [pid, navigate]);
 
   let [flaps, setFlaps] = useState(0);
   let [maxes, setMaxes] = useState({
@@ -50,10 +61,10 @@ function App() {
         context.acceleration.z > AZ_LOWER_BOUND
       ) {
         if (!context.isFlapping && !context.isGameOver) {
-          console.log("WEFJIODSJFIOJDIOSFJ")
+          console.log("WEFJIODSJFIOJDIOSFJ");
           context.setIsFlapping(true);
-          
-          if (playerData.hasOwnProperty('hs')) {
+
+          if (playerData.hasOwnProperty("hs")) {
             if (playerData.hs == playerData.flapCount) {
               setData(`/players/${pid}/hs`, playerData.flapCount + 1);
             }
