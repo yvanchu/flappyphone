@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { isMobile } from "react-device-detect";
 import "./App.css";
 import { setData, useData } from "./util/firebase";
 import QRCode from "./components/QRCode";
@@ -28,42 +29,48 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (
-      data &&
-      data[playerID] &&
-      data[playerID]["playerState"] === "waiting-for-screen"
-    ) {
-      navigate(`/flappy/screen/${playerID}`);
+    if (data && data[playerID]) {
+      if (isMobile) {
+        navigate(`/flappy/phone/${playerID}`);
+      } else {
+        navigate(`/flappy/screen/${playerID}`);
+      }
     }
   }, [data, navigate, playerID]);
 
   return (
     <Background>
-      <header className="App-header">
-        {inQueue ? (
-          <div>
-            <h1>Scan with 📱 to join</h1>
-            <h1>(Keep this tab open)</h1>
-            <QRCode pid={playerID} />
-            {/* <p>ID for Debugging: {playerID}</p> */}
-          </div>
-        ) : (
-          <Entrance>
-            <img
-              src={Title}
-              width={window.innerWidth * 0.5}
-              alt="Flappy Phone"
-            />
-            <P>
-              <ButtonHolder>
-                <ButtonBack />
-                <Button onClick={joinQueue}>ENTER</Button>
-              </ButtonHolder>
-              <Em>BE THE BIRD</Em>
-            </P>
-          </Entrance>
-        )}
-      </header>
+      {isMobile ? (
+        <div>
+          <h1>Visit this site on Desktop instead!</h1>
+        </div>
+      ) : (
+        <header className="App-header">
+          {inQueue ? (
+            <div>
+              <h1>Scan with 📱 to join</h1>
+              <h1>(Keep this tab open)</h1>
+              <QRCode pid={playerID} />
+              {/* <p>ID for Debugging: {playerID}</p> */}
+            </div>
+          ) : (
+            <Entrance>
+              <img
+                src={Title}
+                width={window.innerWidth * 0.5}
+                alt="Flappy Phone"
+              />
+              <P>
+                <ButtonHolder>
+                  <ButtonBack />
+                  <Button onClick={joinQueue}>ENTER</Button>
+                </ButtonHolder>
+                <Em>BE THE BIRD</Em>
+              </P>
+            </Entrance>
+          )}
+        </header>
+      )}
     </Background>
   );
 };
