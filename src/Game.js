@@ -4,15 +4,13 @@ import Bird from "./game_component/bird";
 import Pipes from './game_component/pipes';
 import { useData, setData } from "./util/firebase";
 
+const NUM_PIPES = 3;
+
 export const Game = () => {
     const [gameState, setGameState] = useState({
         isPlaying: false,
         isGameOver: false,
-        pipeData: [
-            {x: 0, y: 0},
-            {x: 0, y: 0},
-            {x: 0, y: 0}
-        ],
+        pipeData: new Array(NUM_PIPES).fill({x: 0, y: 0}),
     })
     const [localCount, setLocalCount] = useState({
         value: 0
@@ -70,7 +68,11 @@ export const Game = () => {
             count={localCount.value}
             gameState={gameState}
         />
-        <Pipes gameState={gameState} setPipeData={(a, b, c) => setPipeData(a, b, c)} />
+        <Pipes
+            numPipes={NUM_PIPES}
+            gameState={gameState}
+            setPipeData={(a, b, c) => setPipeData(a, b, c)}
+        />
     </Stage>
   );
 };

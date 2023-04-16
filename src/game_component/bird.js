@@ -19,10 +19,6 @@ function Bird(props) {
             nextState.count = props.count;
             nextState.currSpeed = INIT_FALL_SPEED;
           }
-
-          let collided = nextState.y > 600;
-          // console.log(props.gameState.pipeData[0].x);
-          props.setGameOver(collided);
           
           return nextState;
         } else {
