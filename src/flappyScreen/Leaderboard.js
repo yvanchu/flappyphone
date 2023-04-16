@@ -113,7 +113,7 @@ function Leaderboard() {
               )
             })
           }
-          {me && <NameBox
+          {me && sorted.length==9 && <NameBox
             highlighted={true}
             place={place}
             name={me[1].name}
