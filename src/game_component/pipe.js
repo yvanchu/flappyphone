@@ -5,7 +5,7 @@ import { SETTING, NUM_PIPES, INIT_PIPES_Y } from "./setting";
 import LFSR from "../util/lfsr";
 
 function Pipe(props) {
-  const x = 375 + props.index * SETTING.pipe.distance;
+  const x = (props.index + 1) * SETTING.pipe.distance;
   const y = INIT_PIPES_Y[props.index];
   return (
     <GameObject
@@ -16,8 +16,8 @@ function Pipe(props) {
           let nextY = currentState.y;
           if (nextX + SETTING.pipe.width < 0) {
             nextX =
-              (NUM_PIPES - 1) * (SETTING.pipe.distance + SETTING.pipe.width) -
-              SETTING.pipe.width;
+              (NUM_PIPES - 1) * (SETTING.pipe.distance + SETTING.pipe.width) +
+              SETTING.pipe.distance;
             if (props.gameState.shouldGetNewSeed) {
               let current = props.gameState.seed;
               let next = LFSR(current);
@@ -49,7 +49,7 @@ function Pipe(props) {
       }}
       initObjData={{
         image: pipeImg,
-        x: props.isTop ? x + SETTING.pipe.width : x,
+        x: props.isTop ? x : x - SETTING.pipe.width,
         y: props.isTop ? y - SETTING.pipe.gap : y,
         width: SETTING.pipe.width,
         height: SETTING.pipe.height,
