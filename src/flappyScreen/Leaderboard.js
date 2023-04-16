@@ -50,10 +50,10 @@ function Leaderboard() {
     if (playerData) {
       let tmp = Object.entries(playerData);
       tmp = tmp.filter((a) => {
-        return a[1].hasOwnProperty("score")
+        return a[1].hasOwnProperty("flapCount")
       })
       tmp = tmp.sort((a, b) => {
-        return b[1].score - a[1].score
+        return b[1].flapCount - a[1].flapCount
       });
 
       let hmm = tmp.filter((a) => {
@@ -107,7 +107,7 @@ function Leaderboard() {
                   highlighted={e[0] == pid}
                   place={i + 1}
                   name={e[1].name}
-                  score={e[1].score}
+                  score={e[1].flapCount}
                   key={i}
                 />
               )
@@ -117,7 +117,7 @@ function Leaderboard() {
             highlighted={true}
             place={place}
             name={me[1].name}
-            score={me[1].score}
+            score={me[1].flapCount}
           />}
         </Holder>
       </Column>
