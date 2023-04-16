@@ -17,9 +17,12 @@ const JoinFromPhone = (props) => {
   const [modal, setModal] = useState(false);
 
   const startGame = () => {
-    props.handlePermission();
-    setData(`/players/${props.pid}/name`, name);
-    setData(`/players/${props.pid}/playerState`, "waiting-for-screen");
+    if (name != "") {
+      props.handlePermission();
+      setData(`/players/${props.pid}/character`, props.bird.index);
+      setData(`/players/${props.pid}/name`, name);
+      setData(`/players/${props.pid}/playerState`, "waiting-for-screen");
+    }
   };
 
   const click = (amt) => {
@@ -72,7 +75,7 @@ const JoinFromPhone = (props) => {
         {/* <input type="file" /> */}
       </Flex>
       <Flex flex={1}>
-        <Submit onClick={startGame} valid={false}>
+        <Submit onClick={startGame} valid={name != ""}>
           Ready to Fly
         </Submit>
       </Flex>
@@ -134,6 +137,7 @@ const Submit = styled.button`
   color: black;
   font-family: "Russo One";
   opacity: ${props => props.valid ? 1: 0.5};
+  cursor: ${props => props.valid ? "pointer" : "default"};
 `;
 
 const Carousel = styled.div`
