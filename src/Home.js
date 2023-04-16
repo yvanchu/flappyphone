@@ -1,10 +1,11 @@
-// a home screen that takes in a name and has a purple play button
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import QRCodeStyling from "qr-code-styling";
 import "./App.css";
 import { setData, useData } from "./util/firebase";
 import bird from "./assets/bird.png";
+
+//TODO: QR code is super buggy
 
 const qrCode = new QRCodeStyling({
   width: 300,
