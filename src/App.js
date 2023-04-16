@@ -9,6 +9,7 @@ import { Context } from "./components/Context";
 import Sensor from "./components/Sensor";
 
 import "./App.css";
+import JoinFromPhone from "./JoinFromPhone";
 
 const ALPHA_LOWER_BOUND = 300;
 const ALPHA_UPPER_BOUND = 1010;
@@ -109,13 +110,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          <button onClick={handlePermissions}>Start</button>
-        </p>
-        (
+        <p>Flap to Start</p>(
         {loading ? (
           "Loading..."
-        ) : (
+        ) : playerData.playerState === "waiting-for-screen" ? (
           <>
             <h3>Sensor Values</h3>
             <Sensor fieldName={"gyroscope"} threshold={200} />
@@ -127,10 +125,12 @@ function App() {
             <p>{maxes.rot}</p>
             <p>{maxes.trans}</p>
           </>
+        ) : (
+          <JoinFromPhone handlePermission={handlePermissions} pid={pid} />
         )}
         )
       </header>
-      <Game />
+      {/* <Game /> */}
     </div>
   );
 }
