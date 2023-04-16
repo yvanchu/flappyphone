@@ -55,6 +55,7 @@ let context = useContext(Context);
 
   useEffect(() => {
     setData(`/players/${pid}/flapCount`, 0);
+    setData(`/players/${pid}/playerState`, "waiting-for-phone");
 
     window.addEventListener("keydown", (event) => {
       if (event.key === " ") {
@@ -80,6 +81,7 @@ let context = useContext(Context);
             isGameOver: true,
         })
         console.log("game over!!!");
+        setData(`/players/${pid}/playerState`, "gameOver");
     }
   }, [gameState.isGameOver]);
 

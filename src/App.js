@@ -27,6 +27,8 @@ function App() {
   const [playerData, loading, error] = useData(`/players/${pid}`);
   const navigate = useNavigate();
 
+  const [start, setStart] = useState(false);
+
   const [birdData, setBirdData] = useState({
     index: 0,
     photo: null,
@@ -59,12 +61,36 @@ function App() {
   let [cooldown, setCooldown] = useState(0);
 
   useEffect(() => {
+
+    if (playerData) {
+      console.log("f", playerData);
+    }
+
+    if(playerData && playerData.playerState === "gameOver"){
+      context.setGameState(
+        {
+          ...context.gameState,
+          isGameOver: true,
+        }
+      );
+    } else if (playerData && playerData.playerState === "waiting-for-phone") {
+      context.setGameState(
+        {
+          ...context.gameState,
+          isGameOver: false,
+        }
+      );
+    }
+
+  }, [playerData]);
+
+  useEffect(() => {
     if (playerData && playerData.flapCount > -1 && cooldown < 1) {
       if (
         context.gyroscope.x > ALPHA_LOWER_BOUND &&
         context.acceleration.z > AZ_LOWER_BOUND
       ) {
-        if (!context.isFlapping && !context.isGameOver) {
+        if (!context.isFlapping && !context.gameState.isGameOver) {
           console.log("WEFJIODSJFIOJDIOSFJ");
           context.setIsFlapping(true);
 
@@ -140,7 +166,7 @@ function App() {
     <Wrapper>
       {loading ? (
         "Loading..."
-      ) : playerData.playerState === "waiting-for-screen" ? (
+      ) : start ? (
         <>
           {/* <h3>Sensor Values</h3>
             <Sensor fieldName={"gyroscope"} threshold={200} />
@@ -163,7 +189,7 @@ function App() {
         </>
       ) : (
         <JoinFromPhone
-          handlePermission={handlePermissions}
+          handlePermission={() => {setStart(true); handlePermissions();}}
           pid={pid}
           bird={birdData}
           updateBird={(x) => {
