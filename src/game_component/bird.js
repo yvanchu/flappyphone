@@ -1,10 +1,10 @@
 import GameObject from "./GameObject";
 import { SETTING } from "./setting";
-import  bird  from "../assets/bird.png";
+import bird from "../assets/bird.png";
 
 let PRINTCOUNT = 0;
-const INIT_FALL_SPEED = 5;
-const GRAVITY = 0.1; 
+const INIT_FALL_SPEED = 3;
+const GRAVITY = 0.1;
 
 function Bird(props) {
   return (
@@ -14,7 +14,7 @@ function Bird(props) {
           for (let i = 0; i < props.gameState.pipeData.length; i++) {
             let pipe = props.gameState.pipeData[i];
             let topPipeY = pipe.y - SETTING.pipe.height - SETTING.pipe.gap;
-            
+
             //check top pipe
             if (
               currentState.x + currentState.width > pipe.x &&
@@ -40,24 +40,21 @@ function Bird(props) {
               console.log("bird y: " + currentState.y);
               console.log("hit bottom pipe");
               props.setGameOver(true);
-            } 
+            }
             // check if hit the ground
-            else if (
-              currentState.y + currentState.height > SETTING.ground.y
-            ) {
+            else if (currentState.y + currentState.height > SETTING.ground.y) {
               console.log("hit ground");
               props.setGameOver(true);
             }
-            
           }
-          let nextState = {...currentState};
+          let nextState = { ...currentState };
           nextState.y -= currentState.currSpeed;
           nextState.currSpeed -= GRAVITY;
-          
+
           if (currentState.count < props.count) {
             nextState.count = props.count;
             nextState.currSpeed = INIT_FALL_SPEED;
-          } 
+          }
           return nextState;
         } else {
           return currentState;
@@ -78,6 +75,6 @@ function Bird(props) {
       }}
     />
   );
-};
+}
 
 export default Bird;

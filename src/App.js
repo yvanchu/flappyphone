@@ -124,6 +124,7 @@ function App() {
             </p>
             <p>{maxes.rot}</p>
             <p>{maxes.trans}</p>
+            <button onClick={handlePermissions}>DEBUG: seek permission</button>
           </>
         ) : (
           <JoinFromPhone handlePermission={handlePermissions} pid={pid} />
