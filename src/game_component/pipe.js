@@ -7,7 +7,7 @@ function Pipe(props) {
                 <GameObject
                         updateFunction={(currentState) => {
                                 props.propagate(currentState.x, currentState.y);
-                                if (props.gameState.isPlaying) {
+                                if (props.gameState.isPlaying && !props.gameState.isGameOver) {
                                         let nextX = currentState.x - 1;
                                         if (nextX < -100) {
                                         nextX = 600;
