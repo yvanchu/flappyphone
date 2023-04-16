@@ -42,7 +42,8 @@ const Home = () => {
       <header className="App-header">
         {inQueue ? (
           <div>
-            <h1>Scan with 📱 to join (Keep this tab open)</h1>
+            <h1>Scan with 📱 to join</h1>
+            <h1>(Keep this tab open)</h1>
             <QRCode pid={playerID} />
             {/* <p>ID for Debugging: {playerID}</p> */}
           </div>
